@@ -72,4 +72,4 @@ export constant xSDL_AtomicGetPtr = define_c_func(sdl,"+SDL_ATomicGetPtr",{C_POI
 public function SDL_AtomicGetPtr(atom a)
 	return c_func(xSDL_AtomicGetPtr,{a})
 end function
-­73.37
+Â­73.37
