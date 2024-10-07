@@ -88,4 +88,4 @@ public constant xSDL_GetPenType = define_c_func(sdl,"+SDL_GetPenType",{C_INT},C_
 public function SDL_GetPenType(atom id)
 	return c_func(xSDL_GetPenType,{id})
 end function
-­89.36
+Â­89.36
