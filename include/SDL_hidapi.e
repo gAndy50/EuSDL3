@@ -145,4 +145,4 @@ export constant xSDL_hid_ble_scan = define_c_proc(sdl,"+SDL_hid_ble_scan",{C_BOO
 public procedure SDL_hid_ble_scan(atom active)
 	c_proc(xSDL_hid_ble_scan,{active})
 end procedure
-­23.18
+Â­23.18
