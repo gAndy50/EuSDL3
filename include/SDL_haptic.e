@@ -329,4 +329,4 @@ public constant xSDL_HapticRumbleStop = define_c_func(sdl,"+SDL_HapticRumbleStop
 public function SDL_HapticRumbleStop(atom hap)
 	return c_func(xSDL_HapticRumbleStop,{hap})
 end function
-­320.0
+Â­320.0
