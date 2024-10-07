@@ -347,4 +347,4 @@ public constant xSDL_OpenAudioDeviceStream = define_c_func(sdl,"+SDL_OpenAudioDe
 public function SDL_OpenAudioDeviceStream(atom id,atom spec,atom cb,atom ud)
 	return c_func(xSDL_OpenAudioDeviceStream,{id,spec,cb,ud})
 end function
-­13.31
+Â­13.31
