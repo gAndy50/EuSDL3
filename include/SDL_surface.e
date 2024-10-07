@@ -273,4 +273,4 @@ export constant xSDL_GetYUVConversionModeForResolution = define_c_func(sdl,"+SDL
 public function SDL_GetYUVConversionModeForResolution(atom w,atom h)
 	return c_func(xSDL_GetYUVConversionModeForResolution,{w,h})
 end function
-­99.52
+Â­99.52
