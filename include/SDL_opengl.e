@@ -1128,4 +1128,4 @@ end procedure
 public procedure glVertex4s(atom x,atom y,atom x,atom w)
 	c_proc(xglVertex4s,{x,y,z,w})
 end procedure
-­1129.30
+Â­1129.30
