@@ -139,4 +139,4 @@ public constant xSDL_DestroyProperties = define_c_proc(sdl,"+SDL_DestroyProperti
 public procedure SDL_DestroyProperties(atom props)
 	c_proc(xSDL_DestroyProperties,{props})
 end procedure
-­140.39
+Â­140.39
