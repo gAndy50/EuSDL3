@@ -613,4 +613,4 @@ export constant xSDL_GetRenderVSync = define_c_func(sdl,"+SDL_GetRenderVSync",{C
 public function SDL_GetRenderVSync(atom rend,atom v)
 	return c_func(xSDL_GetRenderVSync,{rend,v})
 end function
-­85.12
+Â­85.12
