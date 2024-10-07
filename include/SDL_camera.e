@@ -108,4 +108,4 @@ public constant xSDL_CloseCamera = define_c_proc(sdl,"+SDL_CloseCamera",{C_POINT
 public procedure SDL_CloseCamera(atom cam)
 	c_proc(xSDL_CloseCamera,{cam})
 end procedure
-­109.31
+Â­109.31
