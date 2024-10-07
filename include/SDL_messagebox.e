@@ -64,4 +64,4 @@ export constant xSDL_ShowSimpleMessageBox = define_c_func(sdl,"+SDL_ShowSimpleMe
 public function SDL_ShowSimpleMessageBox(atom flags,sequence title,sequence message,atom window)
 	return c_func(xSDL_ShowSimpleMessageBox,{flags,title,message,window})
 end function
-­7.19
+Â­7.19
