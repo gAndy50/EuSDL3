@@ -22,4 +22,4 @@ export constant xSDL_Metal_GetLayer = define_c_func(sdl,"+SDL_Metal_GetLayer",{C
 public function SDL_Metal_GetLayer(atom view)
 	return c_func(xSDL_Metal_GetLayer,{view})
 end function
-­17.38
+Â­17.38
