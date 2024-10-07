@@ -1104,4 +1104,4 @@ ifdef SDL_PLATFORM_GDK then
 	end procedure
 	
 end ifdef
-­1105.1
+Â­1105.1
