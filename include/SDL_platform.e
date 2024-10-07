@@ -8,4 +8,4 @@ public constant xSDL_GetPlatform = define_c_func(sdl,"+SDL_GetPlatform",{},C_STR
 public function SDL_GetPlatform()
 	return c_func(xSDL_GetPlatform,{})
 end function
-­9.35
+Â­9.35
