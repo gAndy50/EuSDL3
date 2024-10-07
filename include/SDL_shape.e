@@ -62,4 +62,4 @@ export constant xSDL_GetShapedWindowMode = define_c_func(sdl,"+SDL_GetShapedWind
 public function SDL_GetShapedWindowMode(atom win,atom shape_mode)
 	return c_func(xSDL_GetShapedWindowMode,{win,shape_mode})
 end function
-­63.57
+Â­63.57
