@@ -107,4 +107,4 @@ public constant xSDL_GetStorageSpaceRemaining = define_c_func(sdl,"+SDL_GetStora
 public function SDL_GetStorageSpaceRemaining(atom storage)
 	return c_func(xSDL_GetStorageSpaceRemaining,{storage})
 end function
-­30.22
+Â­30.22
