@@ -18,4 +18,4 @@ SDL_Delay(3000)
 SDL_DestroyWindow(win)
 
 SDL_Quit()
-­10.6
+Â­10.6
