@@ -56,4 +56,4 @@ export constant xSDL_RemoveTimer = define_c_func(sdl,"+SDL_RemoveTimer",{C_INT},
 public function SDL_RemoveTimer(atom id)
 	return c_func(xSDL_RemoveTimer,{id})
 end function
-­57.37
+Â­57.37
