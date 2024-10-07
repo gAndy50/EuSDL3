@@ -635,4 +635,4 @@ public constant xSDL_AllocateEventMemory = define_c_func(sdl,"+SDL_AllocateEvent
 public function SDL_AllocateEventMemory(atom size)
 	return c_func(xSDL_AllocateEventMemory,{size})
 end function
-­26.22
+Â­26.22
