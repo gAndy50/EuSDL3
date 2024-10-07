@@ -22,4 +22,4 @@ export constant xSDL_UnloadObject = define_c_proc(sdl,"+SDL_UnloadObject",{C_POI
 public procedure SDL_UnloadObject(object handle)
 	c_proc(xSDL_UnloadObject,{handle})
 end procedure
-­23.35
+Â­23.35
