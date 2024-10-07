@@ -34,4 +34,4 @@ export constant xSDL_GetRevision = define_c_func(sdl,"+SDL_GetRevision",{},C_STR
 public function SDL_GetRevision()
 	return c_func(xSDL_GetRevision,{})
 end function
-­14.22
+Â­14.22
