@@ -56,4 +56,4 @@ export constant xSDL_ResetAssertionReport = define_c_proc(sdl,"+SDL_ResetAsserti
 public procedure SDL_ResetAssertionReport()
 	c_proc(xSDL_ResetAssertionReport,{})
 end procedure
-­26.17
+Â­26.17
