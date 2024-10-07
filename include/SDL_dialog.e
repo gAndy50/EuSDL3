@@ -28,4 +28,4 @@ public constant xSDL_ShowOpenFolderDialog = define_c_proc(sdl,"+SDL_ShowOpenFold
 public procedure SDL_ShowOpenFolderDialog(atom cb,atom userdata,atom win,sequence default_location,atom allow_many)
 	c_proc(xSDL_ShowOpenFolderDialog,{cb,userdata,win,default_location,allow_many})
 end procedure
-­29.80
+Â­29.80
