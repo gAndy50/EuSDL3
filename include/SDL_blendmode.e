@@ -38,4 +38,4 @@ export constant xSDL_ComposeCustomBlendMode = define_c_func(sdl,"+SDL_ComposeCus
 public function SDL_ComposeCustomBlendMode(SDL_BlendFactor srcColorFactor,SDL_BlendFactor dstColorFactor, SDL_BlendFactor colorOperation,SDL_BlendFactor srcAlphaFactor,SDL_BlendFactor dstAlphaFactor,SDL_BlendFactor alphaOperation)
 	return c_func(xSDL_ComposeCustomBlendMode,{srcColorFactor,dstColorFactor,colorOperation,srcAlphaFactor,dstAlphaFactor,alphaOperation})
 end function
-­39.133
+Â­39.133
