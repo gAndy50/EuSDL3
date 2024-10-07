@@ -88,4 +88,4 @@ public constant xSDL_GetAppMetadataProperty = define_c_func(sdl,"+SDL_GetAppMeta
 public function SDL_GetAppMetadataProperty(sequence name)
 	return c_func(xSDL_GetAppMetadataProperty,{name})
 end function
-­69.68
+Â­69.68
