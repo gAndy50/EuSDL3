@@ -209,4 +209,4 @@ public constant xSDL_OnApplicationDidBecomeActive = define_c_proc(sdl,"+SDL_OnAp
 public procedure SDL_OnApplicationDidBecomeActive()
 	c_proc(xSDL_OnApplicationDidBecomeActive,{})
 end procedure
-­177.63
+Â­177.63
