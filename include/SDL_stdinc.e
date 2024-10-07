@@ -749,4 +749,4 @@ public constant xSDL_iconv_string = define_c_func(sdl,"+SDL_iconv_string",{C_STR
 public function SDL_iconv_string(sequence tocode,sequence fromcode,sequence inbuf,atom left)
 	return c_func(xSDL_iconv_string,{tocode,fromcode,inbuf,left})
 end function
-­17.22
+Â­17.22
