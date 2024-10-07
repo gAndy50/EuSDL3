@@ -244,4 +244,4 @@ export constant xSDL_WriteBE64 = define_c_func(sdl,"+SDL_WriteBE64",{C_POINTER,C
 public function SDL_WriteBE64(atom dst,atom val)
 	return c_func(xSDL_WriteBE64,{dst,val})
 end function
-­115.0
+Â­115.0
