@@ -62,4 +62,4 @@ export constant xSDL_HasClipboardData = define_c_func(sdl,"+SDL_HasClipboardData
 public function SDL_HasClipboardData(sequence mime_type)
 	return c_func(xSDL_HasClipboardData,{mime_type})
 end function
-­63.49
+Â­63.49
