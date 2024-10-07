@@ -290,4 +290,4 @@ public constant xSDL_WriteS64BE = define_c_func(sdl,"+SDL_WriteS64BE",{C_POINTER
 public function SDL_WriteS64BE(atom dst,atom val)
 	return c_func(xSDL_WriteS64BE,{dst,val})
 end function
-­283.0
+Â­283.0
