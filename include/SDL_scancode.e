@@ -272,4 +272,4 @@ public enum type SDL_Scancode
     SDL_SCANCODE_ENDCALL = 290,
     SDL_NUM_SCANCODES = 512
 end type
-­172.27
+Â­172.27
