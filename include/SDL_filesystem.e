@@ -106,4 +106,4 @@ end function
 --public function SDL_GetPath(atom folder)
 --	return c_func(xSDL_GetPath,{folder})
 --end function
-­101.61
+Â­101.61
