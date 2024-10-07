@@ -33,4 +33,4 @@ public constant xSDL_Vulkan_CreateSurface = define_c_func(sdl,"+SDL_Vulkan_Creat
 public function SDL_Vulkan_CreateSurface(atom window,atom inst,atom surface)
 	return c_func(xSDL_Vulkan_CreateSurface,{window,inst,surface})
 end function
-­16.32
+Â­16.32
