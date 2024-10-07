@@ -80,4 +80,4 @@ public constant xSDL_GetDayOfWeek = define_c_func(sdl,"+SDL_GetDayOfWeek",{C_INT
 public function SDL_GetDayOfWeek(atom year,atom month,atom day)
 	return c_func(xSDL_GetDayOfWeek,{year,month,day})
 end function
-­60.108
+Â­60.108
