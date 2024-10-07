@@ -1,6 +1,6 @@
 # EuSDL3
 
-This is a wrapper of SDL 3 for the OpenEuphoria programming language.
+This is a wrapper of SDL 3 for the OpenEuphoria programming language. This uses the x86 DLL builds of SDL3. You are free to use the x64 DLL builds, but they have not been tested. 
 
 # Sample
 ```euphoria
