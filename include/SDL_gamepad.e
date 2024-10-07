@@ -517,4 +517,4 @@ export constant xSDL_GetGamepadAppleSFSymbolsNameForAxis = define_c_func(sdl,"+S
 public function SDL_GetGamepadAppleSFSymbolsNameForAxis(atom gp,atom axis)
 	return c_func(xSDL_GetGamepadAppleSFSymbolsNameForAxis,{gp,axis})
 end function
-­31.53
+Â­31.53
