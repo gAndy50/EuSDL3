@@ -18,4 +18,4 @@ export constant xSDL_GUIDFromString = define_c_func(sdl,"+SDL_GUIDFromString",{C
 public function SDL_GUIDFromString(sequence pchGUID)
 	return c_func(xSDL_GUIDFromString,{pchGUID})
 end function
-­19.45
+Â­19.45
