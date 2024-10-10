@@ -5,10 +5,10 @@ include SDL3.e
 
 public constant SDL_CACHELINE_SIZE = 128
 
-export constant xSDL_GetCPUCount = define_c_func(sdl,"+SDL_GetCPUCount",{},C_INT)
+export constant xSDL_GetNumLogicalCPUCores = define_c_func(sdl,"+SDL_GetNumLogicalCPUCores",{},C_INT)
 
-public function SDL_GetCPUCount()
-	return c_func(xSDL_GetCPUCount,{})
+public function SDL_GetNumLogicalCPUCores()
+	return c_func(xSDL_GetNumLogicalCPUCores,{})
 end function
 
 export constant xSDL_GetCPUCacheLineSize = define_c_func(sdl,"+SDL_GetCPUCacheLineSize",{},C_INT)
@@ -107,12 +107,13 @@ public function SDL_GetSystemRAM()
 	return c_func(xSDL_GetSystemRAM,{})
 end function
 
-export constant xSDL_SIMDGetAlignment = define_c_func(sdl,"+SDL_SIMDGetAlignment",{},C_SIZE_T)
+export constant xSDL_GetSIMDAlignment = define_c_func(sdl,"+SDL_GetSIMDAlignment",{},C_SIZE_T)
 
-public function SDL_SIMDGetAlignment()
-	return c_func(xSDL_SIMDGetAlignment,{})
+public function SDL_GetSIMDAlignment()
+	return c_func(xSDL_GetSIMDAlignment,{})
 end function
 
+--Disregard code below this comment
 export constant xSDL_RWsize = define_c_func(sdl,"+SDL_RWsize",{C_POINTER},C_INT64)
 
 public function SDL_RWsize(atom context)
@@ -244,4 +245,4 @@ export constant xSDL_WriteBE64 = define_c_func(sdl,"+SDL_WriteBE64",{C_POINTER,C
 public function SDL_WriteBE64(atom dst,atom val)
 	return c_func(xSDL_WriteBE64,{dst,val})
 end function
-Â­115.0
+­111.0
