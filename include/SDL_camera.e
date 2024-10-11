@@ -7,10 +7,11 @@ public constant SDL_CameraDeviceID = C_UINT32
 
 public constant SDL_CameraSpec = define_c_struct({
  C_INT, --format
+ C_INT, --colorspace
  C_INT, --width
  C_INT, --height
- C_INT, --interval_numerator
- C_INT  --interval_denominator
+ C_INT, --framerate_numerator
+ C_INT  --framerate_denominator
 })
 
 public enum type SDL_CameraPosition 
@@ -108,4 +109,4 @@ public constant xSDL_CloseCamera = define_c_proc(sdl,"+SDL_CloseCamera",{C_POINT
 public procedure SDL_CloseCamera(atom cam)
 	c_proc(xSDL_CloseCamera,{cam})
 end procedure
-Â­109.31
+­14.19
