@@ -7,6 +7,28 @@ include SDL_video.e
 
 include SDL3.e
 
+--TODO: Callbacks
+
+public enum type SDL_Sandbox
+	SDL_SANDBOX_NONE = 0,
+	SDL_SANDBOX_UNKNOWN_CONTAINER,
+	SDL_SANDBOX_FLATPAK,
+	SDL_SANDBOX_SNAP,
+	SDL_SANDBOX_MACOS
+end type
+
+public constant xSDL_IsTV = define_c_func(sdl,"+SDL_IsTV",{},C_BOOL)
+
+public function SDL_IsTV()
+	return c_func(xSDL_IsTV,{})
+end function
+
+public constant xSDL_GetSandbox = define_c_func(sdl,"+SDL_GetSandbox",{},C_INT)
+
+public function SDL_GetSandbox()
+	return c_func(xSDL_GetSandbox,{})
+end function
+
 public constant xSDL_SetWindowsMessageHook = define_c_proc(sdl,"+SDL_SetWindowsMessageHook",{C_POINTER,C_POINTER})
 
 public procedure SDL_SetWindowsMessageHook(atom cb,atom userdata)
@@ -209,4 +231,16 @@ public constant xSDL_OnApplicationDidBecomeActive = define_c_proc(sdl,"+SDL_OnAp
 public procedure SDL_OnApplicationDidBecomeActive()
 	c_proc(xSDL_OnApplicationDidBecomeActive,{})
 end procedure
-Â­177.63
+
+public constant xSDL_GetGDKTaskQueue = define_c_func(sdl,"+SDL_GetGDKTaskQueue",{C_POINTER},C_BOOL)
+
+public function SDL_GetGDKTaskQueue(atom outTaskQueue)
+	return c_func(xSDL_GetGDKTaskQueue,{outTaskQueue})
+end function
+
+public constant xSDL_GetGDKDefaultUser = define_c_func(sdl,"+ SDL_GetGDKDefaultUser",{C_POINTER},C_BOOL)
+
+public function SDL_GetGDKDefaultUser(atom outUserHandle)
+	return c_func(xSDL_GetGDKDefaultUser,{outUserHandle})
+end function
+­10.17

@@ -613,4 +613,10 @@ export constant xSDL_GetRenderVSync = define_c_func(sdl,"+SDL_GetRenderVSync",{C
 public function SDL_GetRenderVSync(atom rend,atom v)
 	return c_func(xSDL_GetRenderVSync,{rend,v})
 end function
-Â­85.12
+
+public constant xSDL_RenderDebugText = define_c_func(sdl,"+SDL_RenderDebugText",{C_POINTER,C_FLOAT,C_FLOAT,C_STRING},C_BOOL)
+
+public function SDL_RenderDebugText(atom ren,atom x,atom y,sequence str)
+	return c_func(xSDL_RenderDebugText,{ren,x,y,str})
+end function
+­620.50

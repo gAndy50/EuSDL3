@@ -749,4 +749,10 @@ public constant xSDL_iconv_string = define_c_func(sdl,"+SDL_iconv_string",{C_STR
 public function SDL_iconv_string(sequence tocode,sequence fromcode,sequence inbuf,atom left)
 	return c_func(xSDL_iconv_string,{tocode,fromcode,inbuf,left})
 end function
-Â­17.22
+
+public constant xSDL_StepBackUTF8 = define_c_func(sdl,"+SDL_StepBackUTF8",{C_STRING,C_STRING},C_UINT32)
+
+public function SDL_StepBackUTF8(sequence start,sequence pstr)
+	return c_func(xSDL_StepBackUTF8,{start,pstr})
+end function
+­756.46

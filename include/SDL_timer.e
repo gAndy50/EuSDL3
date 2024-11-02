@@ -56,4 +56,10 @@ export constant xSDL_RemoveTimer = define_c_func(sdl,"+SDL_RemoveTimer",{C_INT},
 public function SDL_RemoveTimer(atom id)
 	return c_func(xSDL_RemoveTimer,{id})
 end function
-Â­57.37
+
+public constant xSDL_DelayPrecise = define_c_proc(sdl,"+SDL_DelayPrecise",{C_UINT64})
+
+public procedure SDL_DelayPrecise(atom ns)
+	c_proc(xSDL_DelayPrecise,{ns})
+end procedure
+­63.31
