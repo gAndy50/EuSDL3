@@ -47,7 +47,7 @@ SDL_Quit()
 ```
 
 # License
-Copyright (c) <2024> <Icy_Viking>
+Copyright (c) <2025> <Icy_Viking>
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
