@@ -67,4 +67,5 @@ freely, subject to the following restrictions:
 
 # HELPING DEVELOPER
 https://www.paypal.com/paypalme/IcyViking
+
 https://ko-fi.com/thegeekpunkgamer
