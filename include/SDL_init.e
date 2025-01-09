@@ -88,4 +88,16 @@ public constant xSDL_GetAppMetadataProperty = define_c_func(sdl,"+SDL_GetAppMeta
 public function SDL_GetAppMetadataProperty(sequence name)
 	return c_func(xSDL_GetAppMetadataProperty,{name})
 end function
-Â­69.68
+
+public constant xSDL_IsMainThread = define_c_func(sdl,"+SDL_IsMainThread",{},C_BOOL)
+
+public function SDL_IsMainThread()
+	return c_func(xSDL_IsMainThread,{})
+end function
+
+public constant xSDL_RunOnMainThread = define_c_func(sdl,"+SDL_RunOnMainThread",{C_POINTER,C_POINTER,C_BOOL},C_BOOL)
+
+public function SDL_RunOnMainThread(object cb,atom userdata,atom wait)
+	return c_func(xSDL_RunOnMainThread,{cb,userdata,wait})
+end function
+­101.55

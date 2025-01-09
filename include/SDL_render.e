@@ -619,4 +619,16 @@ public constant xSDL_RenderDebugText = define_c_func(sdl,"+SDL_RenderDebugText",
 public function SDL_RenderDebugText(atom ren,atom x,atom y,sequence str)
 	return c_func(xSDL_RenderDebugText,{ren,x,y,str})
 end function
-­620.50
+
+public constant xSDL_RenderDebugTextFormat = define_c_func(sdl,"+SDL_RenderDebugTextFormat",{C_POINTER,C_FLOAT,C_FLOAT,C_STRING,C_POINTER},C_BOOL)
+
+public function SDL_RenderDebugTextFormat(atom rend,atom x,atom y,sequence fmt,object xx)
+	return c_func(xSDL_RenderDebugTextFormat,{rend,x,y,fmt,xx})
+end function
+
+public constant xSDL_RenderTextureAffine = define_c_func(sdl,"+SDL_RenderTextureAffine",{C_POINTER,C_POINTER,C_POINTER,C_POINTER,C_POINTER,C_POINTER},C_BOOL)
+
+public function SDL_RenderTextureAffine(atom rend,atom tex,atom srcrect,atom origin,atom right,atom down)
+	return c_func(xSDL_RenderTextureAffine,{rend,tex,srcrect,origin,right,down})
+end function
+­626.58

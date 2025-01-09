@@ -257,4 +257,4 @@ export constant xSDL_GetRGBA = define_c_proc(sdl,"+SDL_GetRGBA",{C_UINT32,C_POIN
 public procedure SDL_GetRGBA(atom pixel,atom format,atom r,atom g,atom b,atom a)
 	c_proc(xSDL_GetRGBA,{pixel,format,r,g,b,a})
 end procedure
-Â­152.2
+­152.2

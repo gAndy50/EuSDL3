@@ -26,7 +26,8 @@ public enum type SDL_Folder
 	SDL_FOLDER_SAVEDGAMES,
 	SDL_FOLDER_SCREENSHOTS,
 	SDL_FOLDER_TEMPLATES,
-	SDL_FOLDER_VIDEOS
+	SDL_FOLDER_VIDEOS,
+	SDL_FOLDER_COUNT
 end type
 
 public constant xSDL_GetUserFolder = define_c_func(sdl,"+SDL_GetUserFolder",{C_INT},C_STRING)
@@ -106,4 +107,10 @@ end function
 --public function SDL_GetPath(atom folder)
 --	return c_func(xSDL_GetPath,{folder})
 --end function
-Â­101.61
+
+public constant xSDL_GetCurrentDirectory = define_c_func(sdl,"+SDL_GetCurrentDirectory",{},C_STRING)
+
+public function SDL_GetCurrentDirectory()
+	return c_func(xSDL_GetCurrentDirectory,{})
+end function
+­114.43

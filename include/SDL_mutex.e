@@ -189,4 +189,4 @@ public constant xSDL_SetInitialized = define_c_proc(sdl,"+SDL_SetInitialized",{C
 public procedure SDL_SetSetInitialized(atom state,atom init)
 	c_proc(xSDL_SetInitialized,{state,init})
 end procedure
-Â­190.13
+­190.13

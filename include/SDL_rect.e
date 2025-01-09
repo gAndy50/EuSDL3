@@ -91,4 +91,4 @@ export constant xSDL_GetRectAndLineIntersectionFloat = define_c_func(sdl,"+SDL_G
 public function SDL_GetRectAndLineIntersectionFloat(atom rect,atom x,atom y,atom x2,atom y2)
 	return c_func(xSDL_GetRectAndLineIntersectionFloat,{rect,x,y,x2,y2})
 end function
-Â­92.69
+­92.69

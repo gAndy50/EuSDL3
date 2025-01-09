@@ -74,4 +74,4 @@ public constant xSDL_DestroyProcess = define_c_proc(sdl,"+SDL_DestroyProcess",{C
 public procedure SDL_DestroyProcess(atom process)
 	c_proc(xSDL_DestroyProcess,{process})
 end procedure
-Â­5.0
+­5.0

@@ -110,4 +110,4 @@ public constant SDL_KMOD_CTRL = or_all({SDL_KMOD_LCTRL,SDL_KMOD_RCTRL})
 public constant SDL_KMOD_SHIFT = or_all({SDL_KMOD_LSHIFT,SDL_KMOD_RSHIFT})
 public constant SDL_KMOD_ALT = or_all({SDL_KMOD_LALT,SDL_KMOD_RALT})
 public constant SDL_KMOD_GUI = or_all({SDL_KMOD_LGUI,SDL_KMOD_RGUI})
-Â­110.54
+­110.54

@@ -129,4 +129,4 @@ export constant xSDL_LogSetOutputFunction = define_c_proc(sdl,"+SDL_LogSetOutput
 public procedure SDL_LogSetOutputFunction(atom cb,object data)
 	c_proc(xSDL_LogSetOutputFunction,{cb,data})
 end procedure
-Â­127.72
+­127.72

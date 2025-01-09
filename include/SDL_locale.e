@@ -16,4 +16,4 @@ export constant xSDL_GetPreferredLocales = define_c_func(sdl,"+SDL_GetPreferredL
 public function SDL_GetPreferredLocales()
 	return c_func(xSDL_GetPreferredLocales,{})
 end function
-Â­17.39
+­17.39

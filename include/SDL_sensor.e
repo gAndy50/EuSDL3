@@ -92,4 +92,4 @@ export constant xSDL_UpdateSensors = define_c_proc(sdl,"+SDL_UpdateSensors",{})
 public procedure SDL_UpdateSensors()
 	c_proc(xSDL_UpdateSensors,{})
 end procedure
-Â­93.30
+­93.30

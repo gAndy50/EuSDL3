@@ -17,4 +17,4 @@ export constant xSDL_GetPowerInfo = define_c_func(sdl,"+SDL_GetPowerInfo",{C_POI
 public function SDL_GetPowerInfo(atom seconds,atom percent)
 	return c_func(xSDL_GetPowerInfo,{seconds,percent})
 end function
-Â­7.27
+­7.27

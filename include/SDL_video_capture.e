@@ -124,4 +124,4 @@ public constant xSDL_CloseVideoCapture = define_c_proc(sdl,"+SDL_CloseVideoCaptu
 public procedure SDL_CloseVideoCapture(atom dev)
 	c_proc(xSDL_CloseVideoCapture,{dev})
 end procedure
-Â­125.37
+­125.37

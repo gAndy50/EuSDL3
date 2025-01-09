@@ -62,4 +62,4 @@ export constant xSDL_GetTouchFinger = define_c_func(sdl,"+SDL_GetTouchFinger",{C
 public function SDL_GetTouchFinger(atom id,atom index)
 	return c_func(xSDL_GetTouchFinger,{id,index})
 end function
-Â­63.46
+­63.46

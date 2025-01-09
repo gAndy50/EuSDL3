@@ -41,4 +41,4 @@ export constant xSDL_Error = define_c_func(sdl,"+SDL_Error",{C_INT},C_INT)
 public function SDL_Error(SDL_errorcode code)
 	return c_func(xSDL_Error,{code})
 end function
-Â­42.33
+­42.33

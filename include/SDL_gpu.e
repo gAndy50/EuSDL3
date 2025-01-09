@@ -1090,6 +1090,30 @@ public function SDL_GPUTextureSupportsSampleCount(atom device,atom format,atom s
 	return c_func(xSDL_GPUTextureSupportsSampleCount,{device,format,sampleCount})
 end function
 
+public constant xSDL_CalculateGPUTextureFormatSize = define_c_func(sdl,"+SDL_CalculateGPUTextureFormatSize",{C_INT,C_UINT32,C_UINT32,C_UINT32},C_UINT32)
+
+public function SDL_CalculateGPUTextureFormatSize(atom width,atom height,atom depth_or_layer_count)
+	return c_func(xSDL_CalculateGPUTextureFormatSize,{width,height,depth_or_layer_count})
+end function
+
+public constant xSDL_CancelGPUCommandBuffer = define_c_func(sdl,"+SDL_CancelGPUCommandBuffer",{C_POINTER},C_BOOL)
+
+public function SDL_CancelGPUCommandBuffer(object cmd_buffer)
+	return c_func(xSDL_CancelGPUCommandBuffer,{cmd_buffer})
+end function
+
+public constant xSDL_SetGPUAllowedFramesInFlight = define_c_func(sdl,"+SDL_SetGPUAllowedFramesInFlight",{C_POINTER,C_UINT32},C_BOOL)
+
+public function SDL_SetGPUAllowedFramesInFlight(atom device,atom allow_frames)
+	return c_func(xSDL_SetGPUAllowedFramesInFlight,{device,allow_frames})
+end function
+
+public constant xSDL_WaitForGPUSwapchain = define_c_func(sdl,"+SDL_WaitForGPUSwapchain",{C_POINTER,C_POINTER},C_BOOL)
+
+public function SDL_WaitForGPUSwapchain(atom device,atom win)
+	return c_func(xSDL_WaitForGPUSwapchain,{device,win})
+end function
+
 ifdef SDL_PLATFORM_GDK then
 
 	public constant xSDL_GDKSuspendGPU = define_c_proc(sdl,"+SDL_GDKSuspendGPU",{C_POINTER}),
@@ -1104,4 +1128,4 @@ ifdef SDL_PLATFORM_GDK then
 	end procedure
 	
 end ifdef
-Â­1105.1
+­1110.0

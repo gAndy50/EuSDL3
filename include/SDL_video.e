@@ -750,4 +750,4 @@ export constant xSDL_GL_DeleteContext = define_c_func(sdl,"+SDL_GL_DeleteContext
 public function SDL_GL_DeleteContext(atom ctx)
 	return c_func(xSDL_GL_DeleteContext,{ctx})
 end function
-Â­47.6
+­47.6

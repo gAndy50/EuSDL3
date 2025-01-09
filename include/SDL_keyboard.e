@@ -128,4 +128,4 @@ export constant xSDL_ScreenKeyboardShown = define_c_func(sdl,"+SDL_ScreenKeyboar
 public function SDL_ScreenKeyboardShown(atom window)
 	return c_func(xSDL_ScreenKeyboardShown,{window})
 end function
-Â­111.34
+­111.34

@@ -385,4 +385,16 @@ public constant xSDL_GetSilenceValueForFormat = define_c_func(sdl,"+SDL_GetSilen
 public function SDL_GetSilenceValueForFormat(atom format)
 	return c_func(xSDL_GetSilenceValueForFormat,{format})
 end function
-­386.54
+
+public constant xSDL_IsAudioDevicePhysical = define_c_func(sdl,"+SDL_IsAudioDevicePhysical",{C_UINT32},C_BOOL)
+
+public function SDL_IsAudioDevicePhysical(atom devid)
+	return c_func(xSDL_IsAudioDevicePhysical,{devid})
+end function
+
+public constant xSDL_IsAudioDevicePlayback = define_c_func(sdl,"+SDL_IsAudioDevicePlayback",{C_UINT32},C_BOOL)
+
+public function SDL_IsAudioDevicePlayback(atom devid)
+	return c_func(xSDL_IsAudioDevicePlayback,{devid})
+end function
+­398.50

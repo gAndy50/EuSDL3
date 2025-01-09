@@ -398,4 +398,4 @@ export constant xSDL_GetJoystickPowerLevel = define_c_func(sdl,"+SDL_GetJoystick
 public function SDL_GetJoystickPowerLevel(atom joy)
 	return c_func(xSDL_GetJoystickPowerLevel,{joy})
 end function
-Â­399.48
+­399.48

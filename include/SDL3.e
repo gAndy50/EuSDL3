@@ -77,4 +77,5 @@ public include SDL_process.e
 public include SDL_gpu.e
 public include SDL_dialog.e
 public include SDL_tray.e
-­79.25
+public include SDL_asyncio.e
+­80.28

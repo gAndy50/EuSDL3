@@ -94,4 +94,4 @@ export constant xSDL_TLSCleanup = define_c_proc(sdl,"+SDL_TLSCleanup",{})
 public procedure SDL_TLSCleanup()
 	c_proc(xSDL_TLSCleanup,{})
 end procedure
-Â­95.27
+­95.27

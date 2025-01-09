@@ -290,4 +290,16 @@ public constant xSDL_WriteS64BE = define_c_func(sdl,"+SDL_WriteS64BE",{C_POINTER
 public function SDL_WriteS64BE(atom dst,atom val)
 	return c_func(xSDL_WriteS64BE,{dst,val})
 end function
-Â­283.0
+
+public constant xSDL_SaveFile_IO = define_c_func(sdl,"+SDL_SaveFile_IO",{C_POINTER,C_POINTER,C_SIZE_T,C_BOOL},C_BOOL)
+
+public function SDL_SaveFile_IO(atom src,atom data,atom size,atom closeio)
+	return c_func(xSDL_SaveFile_IO,{src,data,size,closeio})
+end function
+
+public constant xSDL_SaveFile = define_c_func(sdl,"+SDL_SaveFile",{C_STRING,C_POINTER,C_SIZE_T},C_BOOL)
+
+public function SDL_SaveFile(sequence file,atom data,atom size)
+	return c_func(xSDL_SaveFile,{file,data,size})
+end function
+­303.46
