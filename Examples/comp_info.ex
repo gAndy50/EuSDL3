@@ -1,7 +1,7 @@
 include std/ffi.e
 include std/get.e
 
-include SDL3.e
+include SDL.e
 
 atom cpus = SDL_GetNumLogicalCPUCores()
 atom cache = SDL_GetCPUCacheLineSize()
@@ -27,14 +27,7 @@ printf(1,"Has LASX: %d\n",{SDL_HasLASX()})
 printf(1,"System RAM: %d GB\n",{SDL_GetSystemRAM()})
 printf(1,"SIMD Realignment: %d\n",{SDL_GetSIMDAlignment()})
 
-sequence ver = SDL_GetVersion()
-
-printf(1,"\n",{})
-
-printf(1,"SDL Version: Major: %d Minor: %d Patch: %d\n",{ver[1],ver[2],ver[3]})
-
-puts(1,"\n")
-puts(1,"Press ESC to exit\n")
+printf(1,"SDL Version: %d",{SDL_GetVersion()})
 
 while 1 do
 	key = get_key()
@@ -42,4 +35,4 @@ while 1 do
 		exit
 	end if
 end while
-­28.55
+­30.25

@@ -1,7 +1,7 @@
 include std/ffi.e
 include std/machine.e
 
-include SDL3.e
+include SDL.e
 
 atom w = 800
 atom h = 600
@@ -80,4 +80,4 @@ SDL_DestroyRenderer(ren)
 SDL_DestroyWindow(win)
 
 SDL_Quit()
-­19.45
+­79.0

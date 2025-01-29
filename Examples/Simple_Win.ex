@@ -1,4 +1,4 @@
-include SDL3.e
+include SDL.e
 
 atom w = 800
 atom h = 600
@@ -18,4 +18,4 @@ SDL_Delay(3000)
 SDL_DestroyWindow(win)
 
 SDL_Quit()
-Â­10.6
+­1.11

@@ -1,4 +1,4 @@
-include SDL3.e
+include SDL.e
 include std/ffi.e
 
 atom w = 800
@@ -38,4 +38,4 @@ SDL_DestroySurface(surface)
 SDL_DestroyWindow(win)
 
 SDL_Quit()
-­14.0
+­1.11
