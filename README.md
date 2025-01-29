@@ -4,7 +4,7 @@ This is a wrapper of SDL 3 for the OpenEuphoria programming language. This uses 
 
 # Sample
 ```euphoria
-include SDL3.e
+include SDL.e
 include std/ffi.e
 
 atom w = 800
