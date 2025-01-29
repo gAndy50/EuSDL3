@@ -2,33 +2,39 @@ include std/ffi.e
 include std/machine.e
 include std/math.e
 
-include SDL3.e
-
+include SDL.e
+include SDL_stdinc.e
 include SDL_error.e
-include SDL_endian.e
 include SDL_mutex.e
-include SDL_thread.e
-include SDL_rwops.e
-
---TODO: Wrap callback functions
-
---public constant SDL_AudioFormat = C_UINT16
+include SDL_properties.e
+include SDL_iostream.e
 
 public constant SDL_AUDIO_MASK_BITSIZE = 0xFF
+
 public constant SDL_AUDIO_MASK_FLOAT = shift_bits(1,-8)
+
 public constant SDL_AUDIO_MASK_BIG_ENDIAN = shift_bits(1,-12)
+
 public constant SDL_AUDIO_MASK_SIGNED = shift_bits(1,-15)
 
 public enum type SDL_AudioFormat
-	SDL_AUDIO_UNKNOWN = 0x0000,
-	SDL_AUDIO_U8 = 0x0008,
-	SDL_AUDIO_S8 = 0x8008,
-	SDL_AUDIO_S16LE = 0x8010,
-	SDL_AUDIO_S16BE = 0x9010,
-	SDL_AUDIO_S32LE = 0x8020,
-	SDL_AUDIO_S32BE = 0x9020,
-	SDL_AUDIO_F32LE = 0x8120,
-	SDL_AUDIO_F32BE = 0x9120
+	 SDL_AUDIO_UNKNOWN   = 0x0000,  /**< Unspecified audio format */
+    SDL_AUDIO_U8        = 0x0008,  /**< Unsigned 8-bit samples */
+        /* SDL_DEFINE_AUDIO_FORMAT(0, 0, 0, 8), */
+    SDL_AUDIO_S8        = 0x8008,  /**< Signed 8-bit samples */
+        /* SDL_DEFINE_AUDIO_FORMAT(1, 0, 0, 8), */
+    SDL_AUDIO_S16LE     = 0x8010,  /**< Signed 16-bit samples */
+        /* SDL_DEFINE_AUDIO_FORMAT(1, 0, 0, 16), */
+    SDL_AUDIO_S16BE     = 0x9010,  /**< As above, but big-endian byte order */
+        /* SDL_DEFINE_AUDIO_FORMAT(1, 1, 0, 16), */
+    SDL_AUDIO_S32LE     = 0x8020,  /**< 32-bit integer samples */
+        /* SDL_DEFINE_AUDIO_FORMAT(1, 0, 0, 32), */
+    SDL_AUDIO_S32BE     = 0x9020,  /**< As above, but big-endian byte order */
+        /* SDL_DEFINE_AUDIO_FORMAT(1, 1, 0, 32), */
+    SDL_AUDIO_F32LE     = 0x8120,  /**< 32-bit floating point samples */
+        /* SDL_DEFINE_AUDIO_FORMAT(1, 0, 1, 32), */
+    SDL_AUDIO_F32BE     = 0x9120  /**< As above, but big-endian byte order */
+        /* SDL_DEFINE_AUDIO_FORMAT(1, 1, 1, 32), */
 end type
 
 public constant SDL_AUDIO_BITSIZE = SDL_AUDIO_MASK_BITSIZE
@@ -37,16 +43,11 @@ public constant SDL_AUDIO_BYTESIZE = SDL_AUDIO_BITSIZE / 8
 
 public constant SDL_AUDIO_ISFLOAT = SDL_AUDIO_MASK_FLOAT
 
-public constant SDL_AUDIO_ISBIGENDIAN = SDL_AUDIO_MASK_BIG_ENDIAN
-
-public constant SDL_AUDIO_ISLITTLEENDIAN = not SDL_AUDIO_ISBIGENDIAN
-
 public constant SDL_AUDIO_ISSIGNED = SDL_AUDIO_MASK_SIGNED
 
 public constant SDL_AUDIO_ISINT = not SDL_AUDIO_ISFLOAT
 
 public constant SDL_AUDIO_ISUNSIGNED = not SDL_AUDIO_ISSIGNED
-
 
 public constant SDL_AudioDeviceID = C_UINT32
 
@@ -55,14 +56,12 @@ public constant SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK = 0xFFFFFFFF
 public constant SDL_AUDIO_DEVICE_DEFAULT_RECORDING = 0xFFFFFFFE
 
 public constant SDL_AudioSpec = define_c_struct({
-	C_INT, --format SDL_AudioFormat
+	C_UINT32, --format
 	C_INT, --channels
-	C_INT  --freq
+	C_INT --freq
 })
 
 public constant SDL_AUDIO_FRAMESIZE = SDL_AUDIO_BYTESIZE
-
-public constant SDL_AudioStream = C_POINTER
 
 public constant xSDL_GetNumAudioDrivers = define_c_func(sdl,"+SDL_GetNumAudioDrivers",{},C_INT)
 
@@ -94,73 +93,85 @@ public function SDL_GetAudioRecordingDevices(atom count)
 	return c_func(xSDL_GetAudioRecordingDevices,{count})
 end function
 
-public constant xSDL_GetAudioDeviceName = define_c_func(sdl,"+SDL_GetAudioDeviceName",{SDL_AudioDeviceID},C_STRING)
+public constant xSDL_GetAudioDeviceName = define_c_func(sdl,"+SDL_GetAudioDeviceName",{C_UINT32},C_STRING)
 
 public function SDL_GetAudioDeviceName(atom devid)
 	return c_func(xSDL_GetAudioDeviceName,{devid})
 end function
 
-public constant xSDL_GetAudioDeviceFormat = define_c_func(sdl,"+SDL_GetAudioDeviceFormat",{SDL_AudioDeviceID,C_POINTER,C_POINTER},C_BOOL)
+public constant xSDL_GetAudioDeviceFormat = define_c_func(sdl,"+SDL_GetAudioDeviceFormat",{C_UINT32,C_POINTER,C_POINTER},C_BOOL)
 
 public function SDL_GetAudioDeviceFormat(atom devid,atom spec,atom sample_frames)
 	return c_func(xSDL_GetAudioDeviceFormat,{devid,spec,sample_frames})
 end function
 
-public constant xSDL_GetAudioDeviceChannelMap = define_c_func(sdl,"+SDL_GetAudioDeviceChannelMap",{SDL_AudioDeviceID,C_POINTER},C_POINTER)
+public constant xSDL_GetAudioDeviceChannelMap = define_c_func(sdl,"+SDL_GetAudioDeviceChannelMap",{C_UINT32,C_POINTER},C_POINTER)
 
 public function SDL_GetAudioDeviceChannelMap(atom devid,atom count)
 	return c_func(xSDL_GetAudioDeviceChannelMap,{devid,count})
 end function
 
-public constant xSDL_OpenAudioDevice = define_c_func(sdl,"+SDL_OpenAudioDevice",{SDL_AudioDeviceID,C_POINTER},SDL_AudioDeviceID)
+public constant xSDL_OpenAudioDevice = define_c_func(sdl,"+SDL_OpenAudioDevice",{C_UINT32,C_POINTER},C_UINT32)
 
 public function SDL_OpenAudioDevice(atom devid,atom spec)
 	return c_func(xSDL_OpenAudioDevice,{devid,spec})
 end function
 
-public constant xSDL_PauseAudioDevice = define_c_func(sdl,"+SDL_PauseAudioDevice",{SDL_AudioDeviceID},C_BOOL)
+public constant xSDL_IsAudioDevicePhysical = define_c_func(sdl,"+SDL_IsAudioDevicePhysical",{C_UINT32},C_BOOL)
 
-public function SDL_PauseAudioDevice(atom dev)
-	return c_func(xSDL_PauseAudioDevice,{dev})
+public function SDL_IsAudioDevicePhysical(atom devid)
+	return c_func(xSDL_IsAudioDevicePhysical,{devid})
 end function
 
-public constant xSDL_ResumeAudioDevice = define_c_func(sdl,"+SDL_ResumeAudioDevice",{SDL_AudioDeviceID},C_BOOL)
+public constant xSDL_IsAudioDevicePlayback = define_c_func(sdl,"+SDL_IsAudioDevicePlayback",{C_UINT32},C_BOOL)
+
+public function SDL_IsAudioDevicePlayback(atom devid)
+	return c_func(xSDL_IsAudioDevicePlayback,{devid})
+end function
+
+public constant xSDL_PauseAudioDevice = define_c_func(sdl,"+SDL_PauseAudioDevice",{C_UINT32},C_BOOL)
+
+public function SDL_PauseAudioDevice(atom devid)
+	return c_func(xSDL_PauseAudioDevice,{devid})
+end function
+
+public constant xSDL_ResumeAudioDevice = define_c_func(sdl,"+SDL_ResumeAudioDevice",{C_UINT32},C_BOOL)
 
 public function SDL_ResumeAudioDevice(atom dev)
 	return c_func(xSDL_ResumeAudioDevice,{dev})
 end function
 
-public constant xSDL_AudioDevicePaused = define_c_func(sdl,"+SDL_AudioDevicePaused",{SDL_AudioDeviceID},C_BOOL)
+public constant xSDL_AudioDevicePaused = define_c_func(sdl,"+SDL_AudioDevicePaused",{C_UINT32},C_BOOL)
 
 public function SDL_AudioDevicePaused(atom dev)
 	return c_func(xSDL_AudioDevicePaused,{dev})
 end function
 
-public constant xSDL_GetAudioDeviceGain = define_c_func(sdl,"+SDL_GetAudioDeviceGain",{SDL_AudioDeviceID},C_FLOAT)
+public constant xSDL_GetAudioDeviceGain = define_c_func(sdl,"+SDL_GetAudioDeviceGain",{C_UINT32},C_FLOAT)
 
 public function SDL_GetAudioDeviceGain(atom devid)
 	return c_func(xSDL_GetAudioDeviceGain,{devid})
 end function
 
-public constant xSDL_SetAudioDeviceGain = define_c_func(sdl,"+SDL_SetAudioDeviceGain",{SDL_AudioDeviceID,C_FLOAT},C_BOOL)
+public constant xSDL_SetAudioDeviceGain = define_c_func(sdl,"+SDL_SetAudioDeviceGain",{C_UINT32,C_FLOAT},C_BOOL)
 
 public function SDL_SetAudioDeviceGain(atom devid,atom gain)
 	return c_func(xSDL_SetAudioDeviceGain,{devid,gain})
 end function
 
-public constant xSDL_CloseAudioDevice = define_c_proc(sdl,"+SDL_CloseAudioDevice",{SDL_AudioDeviceID})
+public constant xSDL_CloseAudioDevice = define_c_proc(sdl,"+SDL_CloseAudioDevice",{C_UINT32})
 
 public procedure SDL_CloseAudioDevice(atom devid)
 	c_proc(xSDL_CloseAudioDevice,{devid})
 end procedure
 
-public constant xSDL_BindAudioStreams = define_c_func(sdl,"+SDL_BindAudioStreams",{SDL_AudioDeviceID,C_POINTER,C_INT},C_BOOL)
+public constant xSDL_BindAudioStreams = define_c_func(sdl,"+SDL_BindAudioStreams",{C_UINT32,C_POINTER,C_INT},C_BOOL)
 
 public function SDL_BindAudioStreams(atom devid,atom streams,atom num_streams)
 	return c_func(xSDL_BindAudioStreams,{devid,streams,num_streams})
 end function
 
-public constant xSDL_BindAudioStream = define_c_func(sdl,"+SDL_BindAudioStream",{SDL_AudioDeviceID,C_POINTER},C_BOOL)
+public constant xSDL_BindAudioStream = define_c_func(sdl,"+SDL_BindAudioStream",{C_UINT32,C_POINTER},C_BOOL)
 
 public function SDL_BindAudioStream(atom devid,atom stream)
 	return c_func(xSDL_BindAudioStream,{devid,stream})
@@ -178,7 +189,7 @@ public procedure SDL_UnbindAudioStream(atom stream)
 	c_proc(xSDL_UnbindAudioStream,{stream})
 end procedure
 
-public constant xSDL_GetAudioStreamDevice = define_c_func(sdl,"+SDL_GetAudioStreamDevice",{C_POINTER},SDL_AudioDeviceID)
+public constant xSDL_GetAudioStreamDevice = define_c_func(sdl,"+SDL_GetAudioStreamDevice",{C_POINTER},C_UINT32)
 
 public function SDL_GetAudioStreamDevice(atom stream)
 	return c_func(xSDL_GetAudioStreamDevice,{stream})
@@ -304,6 +315,12 @@ public function SDL_ResumeAudioStreamDevice(atom stream)
 	return c_func(xSDL_ResumeAudioStreamDevice,{stream})
 end function
 
+public constant xSDL_AudioStreamDevicePaused = define_c_func(sdl,"+SDL_AudioStreamDevicePaused",{C_POINTER},C_BOOL)
+
+public function SDL_AudioStreamDevicePaused(atom stream)
+	return c_func(xSDL_AudioStreamDevicePaused,{stream})
+end function
+
 public constant xSDL_LockAudioStream = define_c_func(sdl,"+SDL_LockAudioStream",{C_POINTER},C_BOOL)
 
 public function SDL_LockAudioStream(atom stream)
@@ -316,17 +333,15 @@ public function SDL_UnlockAudioStream(atom stream)
 	return c_func(xSDL_UnlockAudioStream,{stream})
 end function
 
---TODO: SDL_AudioStreamCallback
-
 public constant xSDL_SetAudioStreamGetCallback = define_c_func(sdl,"+SDL_SetAudioStreamGetCallback",{C_POINTER,C_POINTER,C_POINTER},C_BOOL)
 
-public function SDL_SetAudioStreamGetCallback(atom stream,atom cb,object userdata)
+public function  SDL_SetAudioStreamGetCallback(atom stream,object cb,atom userdata)
 	return c_func(xSDL_SetAudioStreamGetCallback,{stream,cb,userdata})
 end function
 
 public constant xSDL_SetAudioStreamPutCallback = define_c_func(sdl,"+SDL_SetAudioStreamPutCallback",{C_POINTER,C_POINTER,C_POINTER},C_BOOL)
 
-public function SDL_SetAudioStreamPutCallback(atom stream,atom cb,object userdata)
+public function SDL_SetAudioStreamPutCallback(atom stream,object cb,atom userdata)
 	return c_func(xSDL_SetAudioStreamPutCallback,{stream,cb,userdata})
 end function
 
@@ -336,17 +351,15 @@ public procedure SDL_DestroyAudioStream(atom stream)
 	c_proc(xSDL_DestroyAudioStream,{stream})
 end procedure
 
-public constant xSDL_OpenAudioDeviceStream = define_c_func(sdl,"+SDL_OpenAudioDeviceStream",{SDL_AudioDeviceID,C_POINTER,C_POINTER,C_POINTER},C_POINTER)
+public constant xSDL_OpenAudioDeviceStream = define_c_func(sdl,"+SDL_OpenAudioDeviceStream",{C_UINT32,C_POINTER,C_POINTER,C_POINTER},C_POINTER)
 
-public function SDL_OpenAudioDeviceStream(atom devid,atom spec,atom cb,object userdata)
+public function SDL_OpenAudioDeviceStream(atom devid,atom spec,object cb,atom userdata)
 	return c_func(xSDL_OpenAudioDeviceStream,{devid,spec,cb,userdata})
 end function
 
---TODO: AudioPostmixCallback
+public constant xSDL_SetAudioPostmixCallback = define_c_func(sdl,"+SDL_SetAudioPostmixCallback",{C_UINT32,C_POINTER,C_POINTER},C_BOOL)
 
-public constant xSDL_SetAudioPostmixCallback = define_c_func(sdl,"+SDL_SetAudioPostmixCallback",{SDL_AudioDeviceID,C_POINTER,C_POINTER},C_BOOL)
-
-public function SDL_SetAudioPostmixCallback(atom devid,atom cb,object userdata)
+public function SDL_SetAudioPostmixCallback(atom devid,object cb,atom userdata)
 	return c_func(xSDL_SetAudioPostmixCallback,{devid,cb,userdata})
 end function
 
@@ -377,7 +390,7 @@ end function
 public constant xSDL_GetAudioFormatName = define_c_func(sdl,"+SDL_GetAudioFormatName",{C_INT},C_STRING)
 
 public function SDL_GetAudioFormatName(atom format)
-   return c_func(xSDL_GetAudioFormatName,{format})
+	return c_func(xSDL_GetAudioFormatName,{format})
 end function
 
 public constant xSDL_GetSilenceValueForFormat = define_c_func(sdl,"+SDL_GetSilenceValueForFormat",{C_INT},C_INT)
@@ -385,16 +398,4 @@ public constant xSDL_GetSilenceValueForFormat = define_c_func(sdl,"+SDL_GetSilen
 public function SDL_GetSilenceValueForFormat(atom format)
 	return c_func(xSDL_GetSilenceValueForFormat,{format})
 end function
-
-public constant xSDL_IsAudioDevicePhysical = define_c_func(sdl,"+SDL_IsAudioDevicePhysical",{C_UINT32},C_BOOL)
-
-public function SDL_IsAudioDevicePhysical(atom devid)
-	return c_func(xSDL_IsAudioDevicePhysical,{devid})
-end function
-
-public constant xSDL_IsAudioDevicePlayback = define_c_func(sdl,"+SDL_IsAudioDevicePlayback",{C_UINT32},C_BOOL)
-
-public function SDL_IsAudioDevicePlayback(atom devid)
-	return c_func(xSDL_IsAudioDevicePlayback,{devid})
-end function
-­398.50
+­387.85

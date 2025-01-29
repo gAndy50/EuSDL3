@@ -1,23 +1,28 @@
 include std/ffi.e
 include std/machine.e
 
-include SDL3.e
+include SDL.e
+include SDL_stdinc.e
+include SDL_error.e
+include SDL_pixels.e
+include SDL_properties.e
+include SDL_surface.e
 
-public constant SDL_CameraDeviceID = C_UINT32
+public constant SDL_CameraID = C_UINT32
 
 public constant SDL_CameraSpec = define_c_struct({
- C_INT, --format
- C_INT, --colorspace
- C_INT, --width
- C_INT, --height
- C_INT, --framerate_numerator
- C_INT  --framerate_denominator
+	C_INT, --format
+	C_INT, --colorspace
+	C_INT, --width
+	C_INT, --height
+	C_INT, --framerate_numerator
+	C_INT  --framerate_denominator
 })
 
-public enum type SDL_CameraPosition 
+public enum type SDL_CameraPosition
 	SDL_CAMERA_POSITION_UNKNOWN = 0,
-	SDL_CAMERA_POSITION_FRONT_FACING,
-	SDL_CAMERA_POSITION_BACK_FACING
+    SDL_CAMERA_POSITION_FRONT_FACING,
+    SDL_CAMERA_POSITION_BACK_FACING
 end type
 
 public constant xSDL_GetNumCameraDrivers = define_c_func(sdl,"+SDL_GetNumCameraDrivers",{},C_INT)
@@ -38,75 +43,75 @@ public function SDL_GetCurrentCameraDriver()
 	return c_func(xSDL_GetCurrentCameraDriver,{})
 end function
 
-public constant xSDL_GetCameraDevices = define_c_func(sdl,"+SDL_GetCameraDevices",{C_POINTER},C_POINTER)
+public constant xSDL_GetCameras = define_c_func(sdl,"+SDL_GetCameras",{C_POINTER},C_POINTER)
 
-public function SDL_GetCameraDevices(atom count)
-	return c_func(xSDL_GetCameraDevices,{count})
+public function SDL_GetCameras(atom count)
+	return c_func(xSDL_GetCameras,{count})
 end function
 
-public constant xSDL_GetCameraDeviceSupportedFormats = define_c_func(sdl,"+SDL_GetCameraSupportedFormats",{SDL_CameraDeviceID,C_POINTER},C_POINTER)
+public constant xSDL_GetCameraSupportedFormats = define_c_func(sdl,"+SDL_GetCameraSupportedFormats",{C_UINT32,C_POINTER},C_POINTER)
 
-public function SDL_GetCameraDeviceSupportedFormats(atom id,atom count)
-	return c_func(xSDL_GetCameraDeviceSupportedFormats,{id,count})
+public function SDL_GetCameraSupportedFormats(atom devid,atom count)
+	return c_func(xSDL_GetCameraSupportedFormats,{devid,count})
 end function
 
-public constant xSDL_GetCameraDeviceName = define_c_func(sdl,"+SDL_GetCameraDeviceName",{SDL_CameraDeviceID},C_STRING)
+public constant xSDL_GetCameraName = define_c_func(sdl,"+SDL_GetCameraName",{C_UINT32},C_STRING)
 
-public function SDL_GetCameraDeviceName(atom id)
-	return c_func(xSDL_GetCameraDeviceName,{id})
+public function SDL_GetCameraName(atom id)
+	return c_func(xSDL_GetCameraName,{id})
 end function
 
-public constant xSDL_GetCameraDevicePosition = define_c_func(sdl,"+SDL_GetCameraDevicePosition",{SDL_CameraDeviceID},C_INT)
+public constant xSDL_GetCameraPosition = define_c_func(sdl,"+SDL_GetCameraPosition",{C_UINT32},C_INT)
 
-public function SDL_GetCameraDevicePosition(atom id)
-	return c_func(xSDL_GetCameraDevicePosition,{id})
+public function SDL_GetCameraPosition(atom id)
+	return c_func(xSDL_GetCameraPosition,{id})
 end function
 
-public constant xSDL_OpenCameraDevice = define_c_func(sdl,"+SDL_OpenCameraDevice",{SDL_CameraDeviceID,C_POINTER},C_POINTER)
+public constant xSDL_OpenCamera = define_c_func(sdl,"+SDL_OpenCamera",{C_UINT32,C_POINTER},C_POINTER)
 
-public function SDL_OpenCameraDevice(atom id,atom spec)
-	return c_func(xSDL_OpenCameraDevice,{id,spec})
+public function SDL_OpenCamera(atom id,atom spec)
+	return c_func(xSDL_OpenCamera,{id,spec})
 end function
 
 public constant xSDL_GetCameraPermissionState = define_c_func(sdl,"+SDL_GetCameraPermissionState",{C_POINTER},C_INT)
 
-public function SDL_GetCameraPermissionState(atom cam)
-	return c_func(xSDL_GetCameraPermissionState,{cam})
+public function SDL_GetCameraPermissionState(atom camera)
+	return c_func(xSDL_GetCameraPermissionState,{camera})
 end function
 
-public constant xSDL_GetCameraInstanceID = define_c_func(sdl,"+SDL_GetCameraInstanceID",{C_POINTER},SDL_CameraDeviceID)
+public constant xSDL_GetCameraID = define_c_func(sdl,"+SDL_GetCameraID",{C_POINTER},C_UINT32)
 
-public function SDL_GetCameraInstanceID(atom cam)
-	return c_func(xSDL_GetCameraInstanceID,{cam})
+public function SDL_GetCameraID(atom camera)
+	return c_func(xSDL_GetCameraID,{camera})
 end function
 
-public constant xSDL_GetCameraProperties = define_c_func(sdl,"+SDL_GetCameraProperties",{C_POINTER},C_INT)
+public constant xSDL_GetCameraProperties = define_c_func(sdl,"+SDL_GetCameraProperties",{C_POINTER},C_UINT32)
 
-public function SDL_GetCameraProperties(atom cam)
-	return c_func(xSDL_GetCameraProperties,{cam})
+public function SDL_GetCameraProperties(atom camera)
+	return c_func(xSDL_GetCameraProperties,{camera})
 end function
 
-public constant xSDL_GetCameraFormat = define_c_func(sdl,"+SDL_GetCameraFormat",{C_POINTER,C_POINTER},C_INT)
+public constant xSDL_GetCameraFormat = define_c_func(sdl,"+SDL_GetCameraFormat",{C_POINTER,C_POINTER},C_BOOL)
 
-public function SDL_GetCameraFormat(atom cam,atom spec)
-	return c_func(xSDL_GetCameraFormat,{cam,spec})
+public function SDL_GetCameraFormat(atom camera,atom spec)
+	return c_func(xSDL_GetCameraFormat,{camera,spec})
 end function
 
 public constant xSDL_AcquireCameraFrame = define_c_func(sdl,"+SDL_AcquireCameraFrame",{C_POINTER,C_POINTER},C_POINTER)
 
-public function SDL_AcquireCameraFrame(atom cam,atom ts)
-	return c_func(xSDL_AcquireCameraFrame,{cam,ts})
+public function SDL_AcquireCameraFrame(atom camera,atom timestampNS)
+	return c_func(xSDL_AcquireCameraFrame,{camera,timestampNS})
 end function
 
-public constant xSDL_ReleaseCameraFrame = define_c_func(sdl,"+SDL_ReleaseCameraFrame",{C_POINTER,C_POINTER},C_INT)
+public constant xSDL_ReleaseCameraFrame = define_c_proc(sdl,"+SDL_ReleaseCameraFrame",{C_POINTER,C_POINTER})
 
-public function SDL_ReleaseCameraFrame(atom cam,atom frame)
-	return c_func(xSDL_ReleaseCameraFrame,{cam,frame})
-end function
+public procedure SDL_ReleaseCameraFrame(atom camera,atom frame)
+	c_proc(xSDL_ReleaseCameraFrame,{camera,frame})
+end procedure
 
 public constant xSDL_CloseCamera = define_c_proc(sdl,"+SDL_CloseCamera",{C_POINTER})
 
-public procedure SDL_CloseCamera(atom cam)
-	c_proc(xSDL_CloseCamera,{cam})
+public procedure SDL_CloseCamera(atom camera)
+	c_proc(xSDL_CloseCamera,{camera})
 end procedure
-­14.19
+­115.34

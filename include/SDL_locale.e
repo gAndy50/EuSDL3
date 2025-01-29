@@ -1,19 +1,18 @@
 include std/ffi.e
 include std/machine.e
-include std/math.e
 
+include SDL.e
+include SDL_stdinc.e
 include SDL_error.e
-
-include SDL3.e
 
 public constant SDL_Locale = define_c_struct({
 	C_STRING, --language
-	C_STRING --country
+	C_STRING  --country
 })
 
-export constant xSDL_GetPreferredLocales = define_c_func(sdl,"+SDL_GetPreferredLocales",{},C_POINTER)
+public constant xSDL_GetPreferredLocales = define_c_func(sdl,"+SDL_GetPreferredLocales",{C_POINTER},C_POINTER)
 
-public function SDL_GetPreferredLocales()
-	return c_func(xSDL_GetPreferredLocales,{})
+public function SDL_GetPreferredLocales(atom count)
+	return c_func(xSDL_GetPreferredLocales,{count})
 end function
-­17.39
+­17.12

@@ -2,18 +2,16 @@ include std/ffi.e
 include std/machine.e
 include std/math.e
 
-include SDL3.e
-
+include SDL.e
+include SDL_stdinc.e
 include SDL_error.e
 include SDL_joystick.e
-
---typedefstruct SDL_Haptic
 
 public constant SDL_HAPTIC_CONSTANT = shift_bits(1,0)
 
 public constant SDL_HAPTIC_SINE = shift_bits(1,-1)
 
-public constant SDL_HAPTIC_LEFTRIGHT = shift_bits(1,-2)
+public constant SDL_HAPTIC_SQUARE = shift_bits(1,-2)
 
 public constant SDL_HAPTIC_TRIANGLE = shift_bits(1,-3)
 
@@ -31,15 +29,23 @@ public constant SDL_HAPTIC_INERTIA = shift_bits(1,-9)
 
 public constant SDL_HAPTIC_FRICTION = shift_bits(1,-10)
 
-public constant SDL_HAPTIC_CUSTOM = shift_bits(1,-11)
+public constant SDL_HAPTIC_LEFTRIGHT = shift_bits(1,-11)
 
-public constant SDL_HAPTIC_GAIN = shift_bits(1,-12)
+public constant SDL_HAPTIC_RESERVED1 = shift_bits(1,-12)
 
-public constant SDL_HAPTIC_AUTOCENTER = shift_bits(1,-13)
+public constant SDL_HAPTIC_RESERVED2 = shift_bits(1,-13)
 
-public constant SDL_HAPTIC_STATUS = shift_bits(1,-14)
+public constant SDL_HAPTIC_RESERVED3 = shift_bits(1,-14)
 
-public constant SDL_HAPTIC_PAUSE = shift_bits(1,-15)
+public constant SDL_HAPTIC_CUSTOM = shift_bits(1,-15)
+
+public constant SDL_HAPTIC_GAIN = shift_bits(1,-16)
+
+public constant SDL_HAPTIC_AUTOCENTER = shift_bits(1,-17)
+
+public constant SDL_HAPTIC_STATUS = shift_bits(1,-18)
+
+public constant SDL_HAPTIC_PAUSE = shift_bits(1,-19)
 
 public constant SDL_HAPTIC_POLAR = 0
 public constant SDL_HAPTIC_CARTESIAN = 1
@@ -50,51 +56,67 @@ public constant SDL_HAPTIC_INFINITY = 4294967295
 
 public constant SDL_HapticDirection = define_c_struct({
 	C_UINT8, --type
-	{C_INT32,3} --direction
+	{C_INT32,3} --dir[3]
 })
 
 public constant SDL_HapticConstant = define_c_struct({
 	C_UINT16, --type
 	SDL_HapticDirection, --direction
+	
 	C_UINT32, --length
 	C_UINT16, --delay
+	
 	C_UINT16, --button
 	C_UINT16, --interval
+	
 	C_INT16, --level
+	
 	C_UINT16, --attack_length
 	C_UINT16, --attack_level
 	C_UINT16, --fade_length
-	C_UINT16 --fade_level
+	C_UINT16  --fade_level
 })
 
 public constant SDL_HapticPeriodic = define_c_struct({
 	C_UINT16, --type
+	
 	SDL_HapticDirection, --direction
+	
 	C_UINT32, --length
 	C_UINT16, --delay
+	
 	C_UINT16, --button
 	C_UINT16, --interval
+	
 	C_UINT16, --period
-	C_UINT16, --magnitude
-	C_UINT16, --offset
+	C_INT16, --mangitude
+	C_INT16, --offset
 	C_UINT16, --phase
+	
 	C_UINT16, --attack_length
 	C_UINT16, --attack_level
 	C_UINT16, --fade_length
-	C_UINT16 --fade_level
+	C_UINT16  --fade_level
 })
 
 public constant SDL_HapticCondition = define_c_struct({
 	C_UINT16, --type
+	
 	SDL_HapticDirection, --direction
+	
 	C_UINT32, --length
 	C_UINT16, --delay
+	
+	C_UINT16, --button
+	C_UINT16, --delay
+	
 	C_UINT16, --button
 	C_UINT16, --interval
+	
 	{C_UINT16,3}, --right_sat[3]
 	{C_UINT16,3}, --left_sat[3]
-	{C_UINT16,3}, --coeff[3]
-	{C_UINT16,3}, --coeff[3]
+	{C_UINT16,3}, --right_coeff[3]
+	{C_UINT16,3}, --left_coeff[3]
 	{C_UINT16,3}, --deadband[3]
 	{C_UINT16,3} --center[3]
 })
@@ -102,12 +124,16 @@ public constant SDL_HapticCondition = define_c_struct({
 public constant SDL_HapticRamp = define_c_struct({
 	C_UINT16, --type
 	SDL_HapticDirection, --direction
+	
 	C_UINT32, --length
 	C_UINT16, --delay
+	
 	C_UINT16, --button
 	C_UINT16, --interval
+	
 	C_INT16, --start
 	C_INT16, --end
+	
 	C_UINT16, --attack_length
 	C_UINT16, --attack_level
 	C_UINT16, --fade_length
@@ -117,27 +143,29 @@ public constant SDL_HapticRamp = define_c_struct({
 public constant SDL_HapticLeftRight = define_c_struct({
 	C_UINT16, --type
 	C_UINT32, --length
-	C_UINT16, --large_magnitude
-	C_UINT16 --small_magnitude
+	C_UINT16, --large_mag
+	C_UINT16  --small_mag
 })
 
 public constant SDL_HapticCustom = define_c_struct({
 	C_UINT16, --type
 	SDL_HapticDirection, --direction
+	
 	C_UINT32, --length
 	C_UINT16, --delay
-	C_UINT16, --button
-	C_UINT16, --delay
+	
 	C_UINT16, --button
 	C_UINT16, --interval
+	
 	C_UINT8, --channels
 	C_UINT16, --period
 	C_UINT16, --samples
 	C_POINTER, --data
+	
 	C_UINT16, --attack_length
 	C_UINT16, --attack_level
 	C_UINT16, --fade_length
-	C_UINT16 --fade_level
+	C_UINT16  --fade_level
 })
 
 public constant SDL_HapticEffect = define_c_union({
@@ -150,183 +178,191 @@ public constant SDL_HapticEffect = define_c_union({
 	SDL_HapticCustom --custom
 })
 
-public constant xSDL_NumHaptics = define_c_func(sdl,"+SDL_NumHaptics",{},C_INT)
+public constant SDL_HapticID = C_UINT32
 
-public function SDL_NumHaptics()
-	return c_func(xSDL_NumHaptics,{})
+public constant xSDL_GetHaptics = define_c_func(sdl,"+SDL_GetHaptics",{C_POINTER},C_POINTER)
+
+public function SDL_GetHaptics(atom count)
+	return c_func(xSDL_GetHaptics,{count})
 end function
 
-public constant xSDL_HapticName = define_c_func(sdl,"+SDL_HapticName",{C_INT},C_STRING)
+public constant xSDL_GetHapticNameForID = define_c_func(sdl,"+SDL_GetHapticNameForID",{C_UINT32},C_STRING)
 
-public function SDL_HapticName(atom idx)
-	return c_func(xSDL_HapticName,{idx})
+public function SDL_GetHapticNameForID(atom id)
+	return c_func(xSDL_GetHapticNameForID,{id})
 end function
 
-public constant xSDL_HapticOpen = define_c_func(sdl,"+SDL_HapticOpen",{C_INT},C_POINTER)
+public constant xSDL_OpenHaptic = define_c_func(sdl,"+SDL_OpenHaptic",{C_UINT32},C_POINTER)
 
-public function SDL_HapticOpen(atom idx)
-	return c_func(xSDL_HapticOpen,{idx})
+public function SDL_OpenHaptic(atom id)
+	return c_func(xSDL_OpenHaptic,{id})
 end function
 
-public constant xSDL_HapticOpened = define_c_func(sdl,"+SDL_HapticOpened",{C_INT},C_INT)
+public constant xSDL_GetHapticFromID = define_c_func(sdl,"+SDL_GetHapticFromID",{C_UINT32},C_POINTER)
 
-public function SDL_HapticOpened(atom idx)
-	return c_func(xSDL_HapticOpened,{idx})
+public function SDL_GetHapticFromID(atom id)
+	return c_func(xSDL_GetHapticFromID,{id})
 end function
 
-public constant xSDL_HapticIndex = define_c_func(sdl,"+SDL_HapticIndex",{C_POINTER},C_INT)
+public constant xSDL_GetHapticID = define_c_func(sdl,"+SDL_GetHapticID",{C_POINTER},C_UINT32)
 
-public function SDL_HapticIndex(atom hap)
-	return c_func(xSDL_HapticIndex,{hap})
+public function SDL_GetHapticID(atom haptic)
+	return c_func(xSDL_GetHapticID,{haptic})
 end function
 
-public constant xSDL_MouseIsHaptic = define_c_func(sdl,"+SDL_MouseIsHaptic",{},C_INT)
+public constant xSDL_GetHapticName = define_c_func(sdl,"+SDL_GetHapticName",{C_POINTER},C_STRING)
 
-public function SDL_MouseIsHaptic()
-	return c_func(xSDL_MouseIsHaptic,{})
+public function SDL_GetHapticName(atom haptic)
+	return c_func(xSDL_GetHapticName,{haptic})
 end function
 
-public constant xSDL_HapticOpenFromMouse = define_c_func(sdl,"+SDL_HapticOpenFromMouse",{},C_POINTER)
+public constant xSDL_IsMouseHaptic = define_c_func(sdl,"+SDL_IsMouseHaptic",{},C_BOOL)
 
-public function SDL_HapticOpenFromMouse()
-	return c_func(xSDL_HapticOpenFromMouse,{})
+public function SDL_IsMouseHaptic()
+	return c_func(xSDL_IsMouseHaptic,{})
 end function
 
-public constant xSDL_JoystickIsHaptic = define_c_func(sdl,"+SDL_JoystickIsHaptic",{C_POINTER},C_INT)
+public constant xSDL_OpenHapticFromMouse = define_c_func(sdl,"+SDL_OpenHapticFromMouse",{},C_POINTER)
 
-public function SDL_JoystickIsHaptic(atom joy)
-	return c_func(xSDL_JoystickIsHaptic,{joy})
+public function SDL_OpenHapticFromMouse()
+	return c_func(xSDL_OpenHapticFromMouse,{})
 end function
 
-public constant xSDL_HapticOpenFromJoystick = define_c_func(sdl,"+SDL_HapticOpenFromJoystick",{C_POINTER},C_POINTER)
+public constant xSDL_IsJoystickHaptic = define_c_func(sdl,"+SDL_IsJoystickHaptic",{C_POINTER},C_BOOL)
 
-public function SDL_HapticOpenFromJoystick(atom joy)
-	return c_func(xSDL_HapticOpenFromJoystick,{joy})
+public function SDL_IsJoystickHaptic(atom joystick)
+	return c_func(xSDL_IsJoystickHaptic,{joystick})
 end function
 
-public constant xSDL_HapticClose = define_c_proc(sdl,"+SDL_HapticClose",{C_POINTER})
+public constant xSDL_OpenHapticFromJoystick = define_c_func(sdl,"+SDL_OpenHapticFromJoystick",{C_POINTER},C_POINTER)
 
-public procedure SDL_HapticClose(atom hap)
-	c_proc(xSDL_HapticClose,{hap})
+public function SDL_OpenHapticFromJoystick(atom joystick)
+	return c_func(xSDL_OpenHapticFromJoystick,{joystick})
+end function
+
+public constant xDL_CloseHaptic = define_c_proc(sdl,"+DL_CloseHaptic",{C_POINTER})
+
+public procedure DL_CloseHaptic(atom haptic)
+	c_proc(xDL_CloseHaptic,{haptic})
 end procedure
 
-public constant xSDL_HapticNumEffects = define_c_func(sdl,"+SDL_HapticNumEffects",{C_POINTER},C_INT)
+public constant xSDL_GetMaxHapticEffects = define_c_func(sdl,"+SDL_GetMaxHapticEffects",{C_POINTER},C_INT)
 
-public function SDL_HapticNumEffects(atom hap)
-	return c_func(xSDL_HapticNumEffects,{hap})
+public function SDL_GetMaxHapticEffects(atom haptic)
+	return c_func(xSDL_GetMaxHapticEffects,{haptic})
 end function
 
-public constant xSDL_HapticNumEffectsPlaying = define_c_func(sdl,"+SDL_HapticNumEffectsPlaying",{C_POINTER},C_INT)
+public constant xSDL_GetMaxHapticEffectsPlaying = define_c_func(sdl,"+SDL_GetMaxHapticEffectsPlaying",{C_POINTER},C_INT)
 
-public function SDL_HapticNumEffectsPlaying(atom hap)
-	return c_func(xSDL_HapticNumEffectsPlaying,{hap})
+public function SDL_GetMaxHapticEffectsPlaying(atom haptic)
+	return c_func(xSDL_GetMaxHapticEffectsPlaying,{haptic})
 end function
 
-public constant xSDL_HapticQuery = define_c_func(sdl,"+SDL_HapticQuery",{C_POINTER},C_UINT)
+public constant xSDL_GetHapticFeatures = define_c_func(sdl,"+SDL_GetHapticFeatures",{C_POINTER},C_UINT32)
 
-public function SDL_HapticQuery(atom hap)
-	return c_func(xSDL_HapticQuery,{hap})
+public function SDL_GetHapticFeatures(atom haptic)
+	return c_func(xSDL_GetHapticFeatures,{haptic})
 end function
 
-public constant xSDL_HapticNumAxes = define_c_func(sdl,"+SDL_HapticNumAxes",{C_POINTER},C_INT)
+public constant xSDL_GetNumHapticAxes = define_c_func(sdl,"+SDL_GetNumHapticAxes",{C_POINTER},C_INT)
 
-public function SDL_HapticNumAxes(atom hap)
-	return c_func(xSDL_HapticNumAxes,{hap})
+public function SDL_GetNumHapticAxes(atom haptic)
+	return c_func(xSDL_GetNumHapticAxes,{haptic})
 end function
 
-public constant xSDL_HapticEffectSupported = define_c_func(sdl,"+SDL_HapticEffectSupported",{C_POINTER,C_POINTER},C_INT)
+public constant xSDL_HapticEffectSupported = define_c_func(sdl,"+SDL_HapticEffectSupported",{C_POINTER,C_POINTER},C_BOOL)
 
-public function SDL_HapticEffectSupported(atom hap,atom eft)
-	return c_func(xSDL_HapticEffectSupported,{hap,eft})
+public function SDL_HapticEffectSupported(atom haptic,atom effect)
+	return c_func(xSDL_HapticEffectSupported,{haptic,effect})
 end function
 
-public constant xSDL_HapticNewEffect = define_c_func(sdl,"+SDL_HapticNewEffect",{C_POINTER,C_POINTER},C_INT)
+public constant xSDL_CreateHapticEffect = define_c_func(sdl,"+SDL_CreateHapticEffect",{C_POINTER,C_POINTER},C_INT)
 
-public function SDL_HapticNewEffect(atom hap,atom eft)
-	return c_func(xSDL_HapticNewEffect,{hap,eft})
+public function SDL_CreateHapticEffect(atom haptic,atom effect)
+	return c_func(xSDL_CreateHapticEffect,{haptic,effect})
 end function
 
-public constant xSDL_HapticUpdateEffect = define_c_func(sdl,"+SDL_HapticUpdateEffect",{C_POINTER,C_INT,C_POINTER},C_INT)
+public constant xSDL_UpdateHapticEffect = define_c_func(sdl,"+SDL_UpdateHapticEffect",{C_POINTER,C_INT,C_POINTER},C_BOOL)
 
-public function SDL_HapticUpdateEffect(atom hap,atom eft,atom dat)
-	return c_func(xSDL_HapticUpdateEffect,{hap,eft,dat})
+public function SDL_UpdateHapticEffect(atom haptic,atom effect,atom data)
+	return c_func(xSDL_UpdateHapticEffect,{haptic,effect,data})
 end function
 
-public constant xSDL_HapticRunEffect = define_c_func(sdl,"+SDL_HapticRunEffect",{C_POINTER,C_INT,C_UINT32},C_INT)
+public constant xSDL_RunHapticEffect = define_c_func(sdl,"+SDL_RunHapticEffect",{C_POINTER,C_INT,C_UINT32},C_BOOL)
 
-public function SDL_HapticRunEffect(atom hap,atom eft,atom its)
-	return c_func(xSDL_HapticRunEffect,{hap,eft,its})
+public function SDL_RunHapticEffect(atom haptic,atom effect,atom iterations)
+	return c_func(xSDL_RunHapticEffect,{haptic,effect,iterations})
 end function
 
-public constant xSDL_HapticStopEffect = define_c_func(sdl,"+SDL_HapticStopEffect",{C_POINTER,C_INT},C_INT)
+public constant xSDL_StopHapticEffect = define_c_func(sdl,"+SDL_StopHapticEffect",{C_POINTER,C_INT},C_BOOL)
 
-public function SDL_HapticStopEffect(atom hap,atom eft)
-	return c_func(xSDL_HapticStopEffect,{hap,eft})
+public function SDL_StopHapticEffect(atom haptic,atom effect)
+	return c_func(xSDL_StopHapticEffect,{haptic,effect})
 end function
 
-public constant xSDL_HapticDestroy = define_c_proc(sdl,"+SDL_HapticDestroy",{C_POINTER,C_INT})
+public constant xSDL_DestroyHapticEffect = define_c_proc(sdl,"+SDL_DestroyHapticEffect",{C_POINTER,C_INT})
 
-public procedure SDL_HapticDestroy(atom hap,atom eft)
-	c_proc(xSDL_HapticDestroy,{hap,eft})
+public procedure SDL_DestroyHapticEffect(atom haptic,atom effect)
+	c_proc(xSDL_DestroyHapticEffect,{haptic,effect})
 end procedure
 
-public constant xSDL_HapticGetEffectStatus = define_c_func(sdl,"+SDL_HapticGetEffectStatus",{C_POINTER,C_INT},C_INT)
+public constant xSDL_GetHapticEffectStatus = define_c_func(sdl,"+SDL_GetHapticEffectStatus",{C_POINTER,C_INT},C_BOOL)
 
-public function SDL_HapticGetEffectStatus(atom hap,atom eft)
-	return c_func(xSDL_HapticGetEffectStatus,{hap,eft})
+public function SDL_GetHapticEffectStatus(atom haptic,atom effect)
+	return c_func(xSDL_GetHapticEffectStatus,{haptic,effect})
 end function
 
-public constant xSDL_HapticSetGain = define_c_func(sdl,"+SDL_HapticSetGain",{C_POINTER,C_INT},C_INT)
+public constant xSDL_SetHapticGain = define_c_func(sdl,"+SDL_SetHapticGain",{C_POINTER,C_INT},C_BOOL)
 
-public function SDL_HapticSetGain(atom hap,atom gain)
-	return c_func(xSDL_HapticSetGain,{hap,gain})
+public function SDL_SetHapticGain(atom haptic,atom gain)
+	return c_func(xSDL_SetHapticGain,{haptic,gain})
 end function
 
-public constant xSDL_HapticSetAutocenter = define_c_func(sdl,"+SDL_HapticSetAutocenter",{C_POINTER,C_INT},C_INT)
+public constant xSDL_SetHapticAutocenter = define_c_func(sdl,"+SDL_SetHapticAutocenter",{C_POINTER,C_INT},C_BOOL)
 
-public function SDL_HapticSetAutocenter(atom hap,atom auto)
-	return c_func(xSDL_HapticSetAutocenter,{hap,auto})
+public function SDL_SetHapticAutocenter(atom haptic,atom autocenter)
+	return c_func(xSDL_SetHapticAutocenter,{haptic,autocenter})
 end function
 
-public constant xSDL_HapticPause = define_c_func(sdl,"+SDL_HapticPause",{C_POINTER},C_INT)
+public constant xSDL_PauseHaptic = define_c_func(sdl,"+SDL_PauseHaptic",{C_POINTER},C_BOOL)
 
-public function SDL_HapticPause(atom hap)
-	return c_func(xSDL_HapticPause,{hap})
+public function SDL_PauseHaptic(atom haptic)
+	return c_func(xSDL_PauseHaptic,{haptic})
 end function
 
-public constant xSDL_HapticUnpause = define_c_func(sdl,"+SDL_HapticUnpause",{C_POINTER},C_INT)
+public constant xSDL_ResumeHaptic = define_c_func(sdl,"+SDL_ResumeHaptic",{C_POINTER},C_BOOL)
 
-public function SDL_HapticUnpause(atom hap)
-	return c_func(xSDL_HapticUnpause,{hap})
+public function SDL_ResumeHaptic(atom haptic)
+	return c_func(xSDL_ResumeHaptic,{haptic})
 end function
 
-public constant xSDL_HapticStopAll = define_c_func(sdl,"+SDL_HapticStopAll",{C_POINTER},C_INT)
+public constant xSDL_StopHapticEffects = define_c_func(sdl,"+SDL_StopHapticEffects",{C_POINTER},C_BOOL)
 
-public function SDL_HapticStopAll(atom hap)
-	return c_func(xSDL_HapticStopAll,{hap})
+public function SDL_StopHapticEffects(atom haptic)
+	return c_func(xSDL_StopHapticEffects,{haptic})
 end function
 
-public constant xSDL_HapticRumbleSupported = define_c_func(sdl,"+SDL_HapticRumbleSupported",{C_POINTER},C_INT)
+public constant xSDL_HapticRumbleSupported = define_c_func(sdl,"+SDL_HapticRumbleSupported",{C_POINTER},C_BOOL)
 
-public function SDL_HapticRumbleSupported(atom hap)
-	return c_func(xSDL_HapticRumbleSupported,{hap})
+public function SDL_HapticRumbleSupported(atom haptic)
+	return c_func(xSDL_HapticRumbleSupported,{haptic})
 end function
 
-public constant xSDL_HapticRumbleInit = define_c_func(sdl,"+SDL_HapticRumbleInit",{C_POINTER},C_INT)
+public constant xSDL_InitHapticRumble = define_c_func(sdl,"+SDL_InitHapticRumble",{C_POINTER},C_BOOL)
 
-public function SDL_HapticRumbleInit(atom hap)
-	return c_func(xSDL_HapticRumbleInit,{hap})
+public function SDL_InitHapticRumble(atom haptic)
+	return c_func(xSDL_InitHapticRumble,{haptic})
 end function
 
-public constant xSDL_HapticRumblePlay = define_c_func(sdl,"+SDL_HapticRumblePlay",{C_POINTER,C_FLOAT,C_UINT32},C_INT)
+public constant xSDL_PlayHapticRumble = define_c_func(sdl,"+SDL_PlayHapticRumble",{C_POINTER,C_FLOAT,C_UINT32},C_BOOL)
 
-public function SDL_HapticRumblePlay(atom hap,atom str,atom len)
-	return c_func(xSDL_HapticRumblePlay,{hap,str,len})
+public function SDL_PlayHapticRumble(atom haptic,atom strength,atom len)
+	return c_func(xSDL_PlayHapticRumble,{haptic,strength,len})
 end function
 
-public constant xSDL_HapticRumbleStop = define_c_func(sdl,"+SDL_HapticRumbleStop",{C_POINTER},C_INT)
+public constant xSDL_StopHapticRumble = define_c_func(sdl,"+SDL_StopHapticRumble",{C_POINTER},C_BOOL)
 
-public function SDL_HapticRumbleStop(atom hap)
-	return c_func(xSDL_HapticRumbleStop,{hap})
+public function SDL_StopHapticRumble(atom haptic)
+	return c_func(xSDL_StopHapticRumble,{haptic})
 end function
-­320.0
+­160.20

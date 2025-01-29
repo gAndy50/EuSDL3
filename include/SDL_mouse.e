@@ -2,158 +2,187 @@ include std/ffi.e
 include std/machine.e
 include std/math.e
 
-include SDL3.e
-
+include SDL.e
+include SDL_stdinc.e
 include SDL_error.e
+include SDL_surface.e
 include SDL_video.e
 
---SDL_MouseID C_UINT32
---typedef struct SDL_Cursor
+public constant SDL_MouseID = C_UINT32
 
 public enum type SDL_SystemCursor
-	SDL_SYSTEM_CURSOR_ARROW = 0,
-	SDL_SYSTEM_CURSOR_IBEAM,
-	SDL_SYSTEM_CURSOR_WAIT,
-	SDL_SYSTEM_CURSOR_CROSSHAIR,
-	SDL_SYSTEM_CURSOR_WAITARROW,
-	SDL_SYSTEM_CURSOR_SIZENWSE,
-	SDL_SYSTEM_CURSOR_SIZENESW,
-	SDL_SYSTEM_CURSOR_SIZEWE,
-	SDL_sYSTEM_CURSOR_SIZENS,
-	SDL_SYSTEM_CURSOR_SIZEALL,
-	SDL_SYSTEM_CURSOR_NO,
-	SDL_SYSTEM_CURSOR_HAND,
-	SDL_NUM_SYSTEM_CURSORS
+	SDL_SYSTEM_CURSOR_DEFAULT = 0,      /**< Default cursor. Usually an arrow. */
+    SDL_SYSTEM_CURSOR_TEXT,         /**< Text selection. Usually an I-beam. */
+    SDL_SYSTEM_CURSOR_WAIT,         /**< Wait. Usually an hourglass or watch or spinning ball. */
+    SDL_SYSTEM_CURSOR_CROSSHAIR,    /**< Crosshair. */
+    SDL_SYSTEM_CURSOR_PROGRESS,     /**< Program is busy but still interactive. Usually it's WAIT with an arrow. */
+    SDL_SYSTEM_CURSOR_NWSE_RESIZE,  /**< Double arrow pointing northwest and southeast. */
+    SDL_SYSTEM_CURSOR_NESW_RESIZE,  /**< Double arrow pointing northeast and southwest. */
+    SDL_SYSTEM_CURSOR_EW_RESIZE,    /**< Double arrow pointing west and east. */
+    SDL_SYSTEM_CURSOR_NS_RESIZE,    /**< Double arrow pointing north and south. */
+    SDL_SYSTEM_CURSOR_MOVE,         /**< Four pointed arrow pointing north, south, east, and west. */
+    SDL_SYSTEM_CURSOR_NOT_ALLOWED,  /**< Not permitted. Usually a slashed circle or crossbones. */
+    SDL_SYSTEM_CURSOR_POINTER,      /**< Pointer that indicates a link. Usually a pointing hand. */
+    SDL_SYSTEM_CURSOR_NW_RESIZE,    /**< Window resize top-left. This may be a single arrow or a double arrow like NWSE_RESIZE. */
+    SDL_SYSTEM_CURSOR_N_RESIZE,     /**< Window resize top. May be NS_RESIZE. */
+    SDL_SYSTEM_CURSOR_NE_RESIZE,    /**< Window resize top-right. May be NESW_RESIZE. */
+    SDL_SYSTEM_CURSOR_E_RESIZE,     /**< Window resize right. May be EW_RESIZE. */
+    SDL_SYSTEM_CURSOR_SE_RESIZE,    /**< Window resize bottom-right. May be NWSE_RESIZE. */
+    SDL_SYSTEM_CURSOR_S_RESIZE,     /**< Window resize bottom. May be NS_RESIZE. */
+    SDL_SYSTEM_CURSOR_SW_RESIZE,    /**< Window resize bottom-left. May be NESW_RESIZE. */
+    SDL_SYSTEM_CURSOR_W_RESIZE,     /**< Window resize left. May be EW_RESIZE. */
+    SDL_SYSTEM_CURSOR_COUNT
 end type
 
 public enum type SDL_MouseWheelDirection
-	SDL_MOUSEWHEEL_NORMAL = 0,
-	SDL_MOUSEWHEEL_FLIPPED
+	SDL_MOUSEWHEEL_NORMAL = 0,    /**< The scroll direction is normal */
+    SDL_MOUSEWHEEL_FLIPPED    /**< The scroll direction is flipped / natural */
 end type
 
-export constant xSDL_GetMouseFocus = define_c_func(sdl,"+SDL_GetMouseFocus",{},C_POINTER)
+public constant SDL_MousebuttonFlags = C_UINT32
 
-public function SDL_GetMouseFocus()
-	return c_func(xSDL_GetMouseFocus,{})
-end function
-
-export constant xSDL_GetMouseState = define_c_func(sdl,"+SDL_GetMouseState",{C_POINTER,C_POINTER},C_UINT32)
-
-public function SDL_GetMouseState(atom x,atom y)
-	return c_func(xSDL_GetMouseState,{x,y})
-end function
-
-export constant xSDL_GetGlobalMouseState = define_c_func(sdl,"+SDL_GetGlobalMouseState",{C_POINTER,C_POINTER},C_UINT32)
-
-public function SDL_GetGlobalMouseState(atom x,atom y)
-	return c_func(xSDL_GetGlobalMouseState,{x,y})
-end function
-
-export constant xSDL_GetRelativeMouseState = define_c_func(sdl,"+SDL_GetRelativeMouseState",{C_POINTER,C_POINTER},C_UINT32)
-
-public function SDL_GetRelativeMouseState(atom x,atom y)
-	return c_func(xSDL_GetRelativeMouseState,{x,y})
-end function
-
-export constant xSDL_WarpMouseInWindow = define_c_proc(sdl,"+SDL_WarpMouseInWindow",{C_POINTER,C_FLOAT,C_FLOAT})
-
-public procedure SDL_WarpMouseInWindow(atom window,atom x,atom y)
-	c_proc(xSDL_WarpMouseInWindow,{window,x,y})
-end procedure
-
-export constant xSDL_WarpMouseGlobal = define_c_func(sdl,"+SDL_WarpMouseGlobal",{C_FLOAT,C_FLOAT},C_INT)
-
-public function SDL_WarpMouseGlobal(atom x,atom y)
-	return c_func(xSDL_WarpMouseGlobal,{x,y})
-end function
-
-export constant xSDL_SetRelativeMouseMode = define_c_func(sdl,"+SDL_SetRelativeMouseMode",{C_BOOL},C_INT)
-
-public function SDL_SetRelativeMouseMode(atom en)
-	return c_func(xSDL_SetRelativeMouseMode,{en})
-end function
-
-export constant xSDL_CaptureMouse = define_c_func(sdl,"+SDL_CaptureMouse",{C_BOOL},C_INT)
-
-public function SDL_CaptureMouse(atom en)
-	return c_func(xSDL_CaptureMouse,{en})
-end function
-
-export constant xSDL_GetRelativeMouseMode = define_c_func(sdl,"+SDL_GetRelativeMouseMode",{},C_BOOL)
-
-public function SDL_GetRelativeMouseMode()
-	return c_func(xSDL_GetRelativeMouseMode,{})
-end function
-
-export constant xSDL_CreateCursor = define_c_func(sdl,"+SDL_CreateCursor",{C_POINTER,C_POINTER,C_INT,C_INT,C_INT,C_INT},C_POINTER)
-
-public function SDL_CreateCursor(atom data,atom mask,atom w,atom h,atom x,atom y)
-	return c_func(xSDL_CreateCursor,{data,mask,w,h,x,y})
-end function
-
-export constant xSDL_CreateColorCursor = define_c_func(sdl,"+SDL_CreateColorCursor",{C_POINTER,C_INT,C_INT},C_POINTER)
-
-public function SDL_CreateColorCursor(atom surf,atom x,atom y)
-	return c_func(xSDL_CreateColorCursor,{surf,x,y})
-end function
-
-export constant xSDL_CreateSystemCursor = define_c_func(sdl,"+SDL_CreateSystemCursor",{C_INT},C_POINTER)
-
-public function SDL_CreateSystemCursor(SDL_SystemCursor id)
-	return c_func(xSDL_CreateSystemCursor,{id})
-end function
-
-export constant xSDL_SetCursor = define_c_func(sdl,"+SDL_SetCursor",{C_POINTER},C_INT)
-
-public function SDL_SetCursor(atom cur)
-	return c_func(xSDL_SetCursor,{cur})
-end function
-
-export constant xSDL_GetCursor = define_c_func(sdl,"+SDL_GetCursor",{},C_POINTER)
-
-public function SDL_GetCursor()
-	return c_func(xSDL_GetCursor,{})
-end function
-
-export constant xSDL_GetDefaultCursor = define_c_func(sdl,"+SDL_GetDefaultCursor",{},C_POINTER)
-
-public function SDL_GetDefaultCursor()
-	return c_func(xSDL_GetDefaultCursor,{})
-end function
-
-export constant xSDL_DestroyCursor = define_c_proc(sdl,"+SDL_DestroyCursor",{C_POINTER})
-
-public procedure SDL_DestroyCursor(atom cur)
-	c_proc(xSDL_DestroyCursor,{cur})
-end procedure
-
-export constant xSDL_ShowCursor = define_c_func(sdl,"+SDL_ShowCursor",{},C_INT)
-
-public function SDL_ShowCursor()
-	return c_func(xSDL_ShowCursor,{})
-end function
-
-export constant xSDL_HideCursor = define_c_func(sdl,"+SDL_HideCursor",{},C_INT)
-
-public function SDL_HideCursor()
-	return c_func(xSDL_HideCursor,{})
-end function
-
-export constant xSDL_CursorVisible = define_c_func(sdl,"+SDL_CursorVisible",{},C_BOOL)
-
-public function SDL_CursorVisible()
-	return c_func(xSDL_CursorVisible,{})
-end function
-
-public constant SDL_BUTTON = shift_bits(1,1)
 public constant SDL_BUTTON_LEFT = 1
 public constant SDL_BUTTON_MIDDLE = 2
 public constant SDL_BUTTON_RIGHT = 3
 public constant SDL_BUTTON_X1 = 4
 public constant SDL_BUTTON_X2 = 5
+
+public constant SDL_BUTTON_MASK = shift_bits(1,-1)
 public constant SDL_BUTTON_LMASK = SDL_BUTTON_LEFT
 public constant SDL_BUTTON_MMASK = SDL_BUTTON_MIDDLE
 public constant SDL_BUTTON_RMASK = SDL_BUTTON_RIGHT
 public constant SDL_BUTTON_X1MASK = SDL_BUTTON_X1
 public constant SDL_BUTTON_X2MASK = SDL_BUTTON_X2
-­90.57
+
+public constant xSDL_HasMouse = define_c_func(sdl,"+SDL_HasMouse",{},C_BOOL)
+
+public function SDL_HasMouse()
+	return c_func(xSDL_HasMouse,{})
+end function
+
+public constant xSDL_GetMice = define_c_func(sdl,"+SDL_GetMice",{C_POINTER},C_POINTER)
+
+public function SDL_GetMice(atom count)
+	return c_func(xSDL_GetMice,{count})
+end function
+
+public constant xSDL_GetMouseNameForID = define_c_func(sdl,"+SDL_GetMouseNameForID",{C_UINT32},C_STRING)
+
+public function SDL_GetMouseNameForID(atom id)
+	return c_func(xSDL_GetMouseNameForID,{id})
+end function
+
+public constant xSDL_GetMouseFocus = define_c_func(sdl,"+SDL_GetMouseFocus",{},C_POINTER)
+
+public function SDL_GetMouseFocus()
+	return c_func(xSDL_GetMouseFocus,{})
+end function
+
+public constant xSDL_GetMouseState = define_c_func(sdl,"+SDL_GetMouseState",{C_POINTER,C_POINTER},C_UINT32)
+
+public function SDL_GetMouseState(atom x,atom y)
+	return c_func(xSDL_GetMouseState,{x,y})
+end function
+
+public constant xSDL_GetGlobalMouseState = define_c_func(sdl,"+SDL_GetGlobalMouseState",{C_POINTER,C_POINTER},C_UINT32)
+
+public function SDL_GetGlobalMouseState(atom x,atom y)
+	return c_func(xSDL_GetGlobalMouseState,{x,y})
+end function
+
+public constant xSDL_GetRelativeMouseState = define_c_func(sdl,"+SDL_GetRelativeMouseState",{C_POINTER,C_POINTER},C_UINT32)
+
+public function SDL_GetRelativeMouseState(atom x,atom y)
+	return c_func(xSDL_GetRelativeMouseState,{x,y})
+end function
+
+public constant xSDL_WarpMouseInWindow = define_c_proc(sdl,"+SDL_WarpMouseInWindow",{C_POINTER,C_FLOAT,C_FLOAT})
+
+public procedure SDL_WarpMouseInWindow(atom window,atom x,atom y)
+	c_proc(xSDL_WarpMouseInWindow,{window,x,y})
+end procedure
+
+public constant xSDL_WarpMouseGlobal = define_c_func(sdl,"+SDL_WarpMouseGlobal",{C_FLOAT,C_FLOAT},C_BOOL)
+
+public function SDL_WarpMouseGlobal(atom x,atom y)
+	return c_func(xSDL_WarpMouseGlobal,{x,y})
+end function
+
+public constant xSDL_SetWindowRelativeMouseMode = define_c_func(sdl,"+SDL_SetWindowRelativeMouseMode",{C_POINTER,C_BOOL},C_BOOL)
+
+public function SDL_SetWindowRelativeMouseMode(atom window,atom enabled)
+	return c_func(xSDL_SetWindowRelativeMouseMode,{window,enabled})
+end function
+
+public constant xSDL_GetWindowRelativeMouseMode = define_c_func(sdl,"+SDL_GetWindowRelativeMouseMode",{C_POINTER},C_BOOL)
+
+public function SDL_GetWindowRelativeMouseMode(atom window)
+	return c_func(xSDL_GetWindowRelativeMouseMode,{window})
+end function
+
+public constant xSDL_CaptureMouse = define_c_func(sdl,"+SDL_CaptureMouse",{C_BOOL},C_BOOL)
+
+public function SDL_CaptureMouse(atom enabled)
+	return c_func(xSDL_CaptureMouse,{enabled})
+end function
+
+public constant xSDL_CreateCursor = define_c_func(sdl,"+SDL_CreateCursor",{C_POINTER,C_POINTER,C_INT,C_INT,C_INT,C_INT},C_POINTER)
+
+public function SDL_CreateCursor(atom data,atom mask,atom w,atom h,atom x,atom y)
+	return c_func(xSDL_CreateCursor,{data,mask,w,h,x,y})
+end function
+
+public constant xSDL_CreateColorCursor = define_c_func(sdl,"+SDL_CreateColorCursor",{C_POINTER,C_INT,C_INT},C_POINTER)
+
+public function SDL_CreateColorCursor(atom surface,atom x,atom y)
+	return c_func(xSDL_CreateColorCursor,{surface,x,y})
+end function
+
+public constant xSDL_CreateSystemCursor = define_c_func(sdl,"+SDL_CreateSystemCursor",{C_INT},C_POINTER)
+
+public function SDL_CreateSystemCursor(SDL_SystemCursor id)
+	return c_func(xSDL_CreateSystemCursor,{id})
+end function
+
+public constant xSDL_SetCursor = define_c_func(sdl,"+SDL_SetCursor",{C_POINTER},C_BOOL)
+
+public function SDL_SetCursor(atom cursor)
+	return c_func(xSDL_SetCursor,{cursor})
+end function
+
+public constant xSDL_GetCursor = define_c_func(sdl,"+SDL_GetCursor",{},C_POINTER)
+
+public function SDL_GetCursor()
+	return c_func(xSDL_GetCursor,{})
+end function
+
+public constant xSDL_GetDefaultCursor = define_c_func(sdl,"+SDL_GetDefaultCursor",{},C_POINTER)
+
+public function SDL_GetDefaultCursor()
+	return c_func(xSDL_GetDefaultCursor,{})
+end function
+
+public constant xSDL_DestroyCursor = define_c_proc(sdl,"+SDL_DestroyCursor",{C_POINTER})
+
+public procedure SDL_DestroyCursor(atom cursor)
+	c_proc(xSDL_DestroyCursor,{cursor})
+end procedure
+
+public constant xSDL_ShowCursor = define_c_func(sdl,"+SDL_ShowCursor",{},C_BOOL)
+
+public function SDL_ShowCursor()
+	return c_func(xSDL_ShowCursor,{})
+end function
+
+public constant xSDL_HideCursor = define_c_func(sdl,"+SDL_HideCursor",{},C_BOOL)
+
+public function SDL_HideCursor()
+	return c_func(xSDL_HideCursor,{})
+end function
+
+public constant xSDL_CursorVisible = define_c_func(sdl,"+SDL_CursorVisible",{},C_BOOL)
+
+public function SDL_CursorVisible()
+	return c_func(xSDL_CursorVisible,{})
+end function
+­186.37

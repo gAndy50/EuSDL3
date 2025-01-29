@@ -1,15 +1,11 @@
 include std/ffi.e
 include std/machine.e
 
-include SDL3.e
-
+include SDL.e
+include SDL_stdinc.e
 include SDL_error.e
 include SDL_surface.e
 include SDL_video.e
-
-public constant SDL_Tray = C_POINTER
-public constant SDL_TrayMenu = C_POINTER
-public constant SDL_TrayEntry = C_POINTER
 
 public constant SDL_TrayEntryFlags = C_UINT32
 
@@ -18,13 +14,6 @@ public constant SDL_TRAYENTRY_CHECKBOX = 0x00000002
 public constant SDL_TRAYENTRY_SUBMENU = 0x00000004
 public constant SDL_TRAYENTRY_DISABLED = 0x80000000
 public constant SDL_TRAYENTRY_CHECKED = 0x40000000
-
-public function SDL_TrayCallback(atom userData,atom xentry)
-	return 1
-end function
-
-public object SDL_TrayCB_ID = routine_id("SDL_TrayCallback")
-public atom SDL_TrayCB_CB = call_back(SDL_TrayCB_ID)
 
 public constant xSDL_CreateTray = define_c_func(sdl,"+SDL_CreateTray",{C_POINTER,C_STRING},C_POINTER)
 
@@ -52,8 +41,8 @@ end function
 
 public constant xSDL_CreateTraySubmenu = define_c_func(sdl,"+SDL_CreateTraySubmenu",{C_POINTER},C_POINTER)
 
-public function SDL_CreateTraySubmenu(atom xentry)
-	return c_func(xSDL_CreateTraySubmenu,{xentry})
+public function SDL_CreateTraySubmenu(atom _entry)
+	return c_func(xSDL_CreateTraySubmenu,{_entry})
 end function
 
 public constant xSDL_GetTrayMenu = define_c_func(sdl,"+SDL_GetTrayMenu",{C_POINTER},C_POINTER)
@@ -64,8 +53,8 @@ end function
 
 public constant xSDL_GetTraySubmenu = define_c_func(sdl,"+SDL_GetTraySubmenu",{C_POINTER},C_POINTER)
 
-public function SDL_GetTraySubmenu(atom xentry)
-	return c_func(xSDL_GetTraySubmenu,{xentry})
+public function SDL_GetTraySubmenu(atom _entry)
+	return c_func(xSDL_GetTraySubmenu,{_entry})
 end function
 
 public constant xSDL_GetTrayEntries = define_c_func(sdl,"+SDL_GetTrayEntries",{C_POINTER,C_POINTER},C_POINTER)
@@ -76,56 +65,62 @@ end function
 
 public constant xSDL_RemoveTrayEntry = define_c_proc(sdl,"+SDL_RemoveTrayEntry",{C_POINTER})
 
-public procedure SDL_RemoveTrayEntry(atom xentry)
-	c_proc(xSDL_RemoveTrayEntry,{xentry})
+public procedure SDL_RemoveTrayEntry(atom _entry)
+	c_proc(xSDL_RemoveTrayEntry,{_entry})
 end procedure
 
 public constant xSDL_InsertTrayEntryAt = define_c_func(sdl,"+SDL_InsertTrayEntryAt",{C_POINTER,C_INT,C_STRING,C_INT},C_POINTER)
 
-public function SDL_InsertTrayEntryAt(atom menu,atom pos,sequence xlabel,atom flags)
-	return c_func(xSDL_InsertTrayEntryAt,{menu,pos,xlabel,flags})
+public function SDL_InsertTrayEntryAt(atom menu,atom pos,sequence _label,atom flags)
+	return c_func(xSDL_InsertTrayEntryAt,{menu,pos,_label,flags})
 end function
 
 public constant xSDL_SetTrayEntryLabel = define_c_proc(sdl,"+SDL_SetTrayEntryLabel",{C_POINTER,C_STRING})
 
-public procedure SDL_SetTrayEntryLabel(atom xentry,sequence xlabel)
-	c_proc(xSDL_SetTrayEntryLabel,{xentry,xlabel})
+public procedure SDL_SetTrayEntryLabel(atom _entry,sequence _label)
+	c_proc(xSDL_SetTrayEntryLabel,{_entry,_label})
 end procedure
 
 public constant xSDL_GetTrayEntryLabel = define_c_func(sdl,"+SDL_GetTrayEntryLabel",{C_POINTER},C_STRING)
 
-public function SDL_GetTrayEntryLabel(atom xentry)
-	return c_func(xSDL_GetTrayEntryLabel,{xentry})
+public function SDL_GetTrayEntryLabel(atom _entry)
+	return c_func(xSDL_GetTrayEntryLabel,{_entry})
 end function
 
 public constant xSDL_SetTrayEntryChecked = define_c_proc(sdl,"+SDL_SetTrayEntryChecked",{C_POINTER,C_BOOL})
 
-public procedure SDL_SetTrayEntryChecked(atom xentry,atom checked)
-	c_proc(xSDL_SetTrayEntryChecked,{xentry,checked})
+public procedure SDL_SetTrayEntryChecked(atom _entry,atom checked)
+	c_proc(xSDL_SetTrayEntryChecked,{_entry,checked})
 end procedure
 
 public constant xSDL_GetTrayEntryChecked = define_c_func(sdl,"+SDL_GetTrayEntryChecked",{C_POINTER},C_BOOL)
 
-public function SDL_GetTrayEntryChecked(atom xentry)
-	return c_func(xSDL_GetTrayEntryChecked,{xentry})
+public function SDL_GetTrayEntryChecked(atom _entry)
+	return c_func(xSDL_GetTrayEntryChecked,{_entry})
 end function
 
 public constant xSDL_SetTrayEntryEnabled = define_c_proc(sdl,"+SDL_SetTrayEntryEnabled",{C_POINTER,C_BOOL})
 
-public procedure SDL_SetTrayEntryEnabled(atom xentry,atom enabled)
-	c_proc(xSDL_SetTrayEntryEnabled,{xentry,enabled})
+public procedure SDL_SetTrayEntryEnabled(atom _entry,atom enabled)
+	c_proc(xSDL_SetTrayEntryEnabled,{_entry,enabled})
 end procedure
 
-public constant xSDL_GetTrayEntryEnable = define_c_func(sdl,"+SDL_GetTrayEntryEnable",{C_POINTER},C_BOOL)
+public constant xSDL_GetTrayEntryEnabled = define_c_func(sdl,"+SDL_GetTrayEntryEnabled",{C_POINTER},C_BOOL)
 
-public function SDL_GetTrayEntryEnable(atom xentry)
-	return c_func(xSDL_GetTrayEntryEnable,{xentry})
+public function SDL_GetTrayEntryEnabled(atom _entry)
+	return c_func(xSDL_GetTrayEntryEnabled,{_entry})
 end function
 
 public constant xSDL_SetTrayEntryCallback = define_c_proc(sdl,"+SDL_SetTrayEntryCallback",{C_POINTER,C_POINTER,C_POINTER})
 
-public procedure SDL_SetTrayEntryCallback(atom xentry,object cb,atom userData)
-	c_proc(xSDL_SetTrayEntryCallback,{xentry,cb,userData})
+public procedure SDL_SetTrayEntryCallback(atom _entry,object cb,atom userdata)
+	c_proc(xSDL_SetTrayEntryCallback,{_entry,cb,userdata})
+end procedure
+
+public constant xSDL_ClickTrayEntry = define_c_proc(sdl,"+SDL_ClickTrayEntry",{C_POINTER})
+
+public procedure SDL_ClickTrayEntry(atom _entry)
+	c_proc(xSDL_ClickTrayEntry,{_entry})
 end procedure
 
 public constant xSDL_DestroyTray = define_c_proc(sdl,"+SDL_DestroyTray",{C_POINTER})
@@ -136,8 +131,8 @@ end procedure
 
 public constant xSDL_GetTrayEntryParent = define_c_func(sdl,"+SDL_GetTrayEntryParent",{C_POINTER},C_POINTER)
 
-public function SDL_GetTrayEntryParent(atom xentry)
-	return c_func(xSDL_GetTrayEntryParent,{xentry})
+public function SDL_GetTrayEntryParent(atom _entry)
+	return c_func(xSDL_GetTrayEntryParent,{_entry})
 end function
 
 public constant xSDL_GetTrayMenuParentEntry = define_c_func(sdl,"+SDL_GetTrayMenuParentEntry",{C_POINTER},C_POINTER)
@@ -151,4 +146,10 @@ public constant xSDL_GetTrayMenuParentTray = define_c_func(sdl,"+SDL_GetTrayMenu
 public function SDL_GetTrayMenuParentTray(atom menu)
 	return c_func(xSDL_GetTrayMenuParentTray,{menu})
 end function
-­99.12
+
+public constant xSDL_UpdateTrays = define_c_proc(sdl,"+SDL_UpdateTrays",{})
+
+public procedure SDL_UpdateTrays()
+	c_proc(xSDL_UpdateTrays,{})
+end procedure
+­10.45

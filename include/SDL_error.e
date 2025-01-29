@@ -1,44 +1,36 @@
 include std/ffi.e
 include std/machine.e
 
-include SDL3.e
+include SDL.e
+include SDL_stdinc.e
 
-public constant xSDL_SetError = define_c_func(sdl,"+SDL_SetError",{C_STRING},C_INT)
+public constant xSDL_SetError = define_c_func(sdl,"+SDL_SetError",{C_STRING,C_POINTER},C_BOOL)
 
-public function SDL_SetError(sequence fmt)
-	return c_func(xSDL_SetError,{fmt})
+public function SDL_SetError(sequence fmt,object x)
+	return c_func(xSDL_SetError,{fmt,x})
 end function
 
-export constant xSDL_GetError = define_c_func(sdl,"+SDL_GetError",{},C_STRING)
+public constant xSDL_SetErrorV = define_c_func(sdl,"+SDL_SetErrorV",{C_STRING,C_POINTER},C_BOOL)
+
+public function SDL_SetErrorV(sequence fmt,atom ap)
+	return c_func(xSDL_SetErrorV,{fmt,ap})
+end function
+
+public constant xSDL_OutOfMemory = define_c_func(sdl,"+SDL_OutOfMemory",{},C_BOOL)
+
+public function SDL_OutOfMemory()
+	return c_func(xSDL_OutOfMemory,{})
+end function
+
+public constant xSDL_GetError = define_c_func(sdl,"+SDL_GetError",{},C_STRING)
 
 public function SDL_GetError()
 	return c_func(xSDL_GetError,{})
 end function
 
-export constant xSDL_GetErrorMsg = define_c_func(sdl,"+SDL_GetErrorMsg",{C_STRING,C_INT},C_STRING)
+public constant xSDL_ClearError = define_c_func(sdl,"+SDL_ClearError",{},C_BOOL)
 
-public function SDL_GetErrorMsg(sequence errstr,atom maxlen)
-	return c_func(xSDL_GetErrorMsg,{errstr,maxlen})
+public function SDL_ClearError()
+	return c_func(xSDL_ClearError,{})
 end function
-
-export constant xSDL_ClearError = define_c_proc(sdl,"+SDL_ClearError",{})
-
-public procedure SDL_ClearError()
-	c_proc(xSDL_ClearError,{})
-end procedure
-
-public enum type SDL_errorcode
-	SDL_ENOMEM = 0,
-	SDL_EFREAD,
-	SDL_EFWRITE,
-	SDL_EFSEEK,
-	SDL_UNSUPPORTED,
-	SDL_LASTERROR
-end type
-
-export constant xSDL_Error = define_c_func(sdl,"+SDL_Error",{C_INT},C_INT)
-
-public function SDL_Error(SDL_errorcode code)
-	return c_func(xSDL_Error,{code})
-end function
-­42.33
+­34.34
