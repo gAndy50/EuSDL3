@@ -386,4 +386,10 @@ public constant xSDL_WriteSurfacePixelFloat = define_c_func(sdl,"+SDL_WriteSurfa
 public function SDL_WriteSurfacePixelFloat(atom surface,atom x,atom y,atom r,atom g,atom b,atom a)
 	return c_func(xSDL_WriteSurfacePixelFloat,{surface,x,y,r,g,b,a})
 end function
-­387.65
+
+public constant xSDL_StretchSurface = define_c_func(sdl,"+SDL_StretchSurface",{C_POINTER,C_POINTER,C_POINTER,C_POINTER,C_INT},C_BOOL)
+
+public function SDL_StretchSurface(atom src,atom srcrect,atom dst,atom dstrect,SDL_ScaleMode scale)
+	return c_func(xSDL_StretchSurface,{src,srcrect,dst,dstrect,scale})
+end function
+­393.67
