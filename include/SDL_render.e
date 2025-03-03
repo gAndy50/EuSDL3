@@ -61,7 +61,7 @@ end function
 
 public constant xSDL_CreateRenderer = define_c_func(sdl,"+SDL_CreateRenderer",{C_POINTER,C_STRING},C_POINTER)
 
-public function SDL_CreateRenderer(atom window,sequence name)
+public function SDL_CreateRenderer(atom window,object name)
 	return c_func(xSDL_CreateRenderer,{window,name})
 end function
 
@@ -667,4 +667,4 @@ public constant xSDL_RenderDebugTextFormat = define_c_func(sdl,"+SDL_RenderDebug
 public function SDL_RenderDebugTextFormat(atom render,atom x,atom y,sequence str,object xx)
 	return c_func(xSDL_RenderDebugTextFormat,{render,x,y,str,xx})
 end function
-­614.36
+­64.53
