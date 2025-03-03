@@ -1,6 +1,6 @@
 --EuSDLImage3
 --Written by Andy P.
---Copyright (c) 2024
+--Copyright (c) 2025
 
 include std/ffi.e
 include std/machine.e
@@ -8,12 +8,14 @@ include std/os.e
 
 public atom img
 
-include SDL3.e
+include SDL.e
 
 ifdef WINDOWS then
 	img = open_dll("SDL3_image.dll")
 	elsifdef LINUX or FREEBSD then
 	img = open_dll("libSDL3_image.so")
+	elsifdef OSX then
+	img = open_dll("libSDL3_image.dylib")
 end ifdef
 
 if img = 0 then
@@ -22,168 +24,168 @@ if img = 0 then
 end if
 
 public constant SDL_IMAGE_MAJOR_VERSION = 3,
-				SDL_IMAGE_MINOR_VERSION = 0,
-				SDL_IMAGE_PATCHLEVEL = 0
+				SDL_IMAGE_MINOR_VERSION = 2,
+				SDL_IMAGE_PATCHLEVEL = 2
 				
-public constant xIMG_Linked_Version = define_c_func(img,"+IMG_Linked_Version",{},C_POINTER)
+public constant xIMG_Version = define_c_func(img,"+IMG_Version",{},C_INT)
 
-public function IMG_Linked_Version()
-	return c_func(xIMG_Linked_Version,{})
+public function IMG_Version()
+	return c_func(xIMG_Version,{})
 end function
-
-public enum type IMG_InitFlags
-	IMG_INIT_JPG = 0x00000001,
-	IMG_INIT_PNG = 0x00000002,
-	IMG_INIT_TIF = 0x00000004,
-	IMG_INIT_WEBP = 0x00000008,
-	IMG_INIT_JXL = 0x00000010,
-	IMG_INIT_AVIF = 0x00000020
-end type
-
-public constant xIMG_Init = define_c_func(img,"+IMG_Init",{C_INT},C_INT)
-
-public function IMG_Init(atom flags)
-	return c_func(xIMG_Init,{flags})
-end function
-
-public constant xIMG_Quit = define_c_proc(img,"+IMG_Quit",{})
-
-public procedure IMG_Quit()
-	c_proc(xIMG_Quit,{})
-end procedure
 
 public constant xIMG_LoadTyped_IO = define_c_func(img,"+IMG_LoadTyped_IO",{C_POINTER,C_BOOL,C_STRING},C_POINTER)
 
-public function IMG_LoadTyped_IO(atom src,atom fs,sequence t)
-	return c_func(xIMG_LoadTyped_IO,{src,fs,t})
+public function IMG_LoadTyped_IO(atom src,atom closeio,sequence xtype)
+	return c_func(xIMG_LoadTyped_IO,{src,closeio,xtype})
 end function
 
 public constant xIMG_Load_IO = define_c_func(img,"+IMG_Load_IO",{C_POINTER,C_BOOL},C_POINTER)
 
-public function IMG_Load_IO(atom src,atom fs)
-	return c_func(xIMG_Load_IO,{src,fs})
+public function IMG_Load_IO(atom src,atom closeio)
+	return c_func(xIMG_Load_IO,{src,closeio})
 end function
 
 public constant xIMG_Load = define_c_func(img,"+IMG_Load",{C_STRING},C_POINTER)
 
 public function IMG_Load(sequence file)
-	return IMG_Load_IO(SDL_IOFromFile(file,"rb"),1)
+	return c_func(xIMG_Load_IO,{file,0})
 end function
 
 public constant xIMG_LoadTexture_IO = define_c_func(img,"+IMG_LoadTexture_IO",{C_POINTER,C_POINTER,C_BOOL},C_POINTER)
 
-public function IMG_LoadTexture_IO(atom rend,atom src,atom fs)
-	return c_func(xIMG_LoadTexture_IO,{rend,src,fs})
+public function IMG_LoadTexture_IO(atom rend,atom src,atom closeio)
+	return c_func(xIMG_LoadTexture_IO,{rend,src,closeio})
 end function
 
 public constant xIMG_LoadTexture = define_c_func(img,"+IMG_LoadTexture",{C_POINTER,C_STRING},C_POINTER)
 
 public function IMG_LoadTexture(atom rend,sequence file)
-	return IMG_LoadTexture_IO(rend, SDL_IOFromFile(file,"rb"),1)
+	return c_func(xIMG_LoadTexture_IO,{rend,file,0})
 end function
 
 public constant xIMG_LoadTextureTyped_IO = define_c_func(img,"+IMG_LoadTextureTyped_IO",{C_POINTER,C_POINTER,C_BOOL,C_STRING},C_POINTER)
 
-public function IMG_LoadTextureTyped_IO(atom rend,atom src,atom fs,sequence t)
-	return c_func(xIMG_LoadTextureTyped_IO,{rend,src,fs,t})
+public function IMG_LoadTextureTyped_IO(atom rend,atom src,atom closeio,sequence xtype)
+	return c_func(xIMG_LoadTextureTyped_IO,{rend,closeio,xtype})
 end function
 
-public constant xIMG_isAVIF = define_c_func(img,"+IMG_isAVIF",{C_POINTER},C_INT),
-				xIMG_isICO = define_c_func(img,"+IMG_isICO",{C_POINTER},C_INT),
-				xIMG_isCUR = define_c_func(img,"+IMG_isCUR",{C_POINTER},C_INT),
-				xIMG_isBMP = define_c_func(img,"+IMG_isBMP",{C_POINTER},C_INT),
-				xIMG_isGIF = define_c_func(img,"+IMG_isGIF",{C_POINTER},C_INT),
-				xIMG_isJPG = define_c_func(img,"+IMG_isJPG",{C_POINTER},C_INT),
-				xIMG_isJXL = define_c_func(img,"+IMG_isJXL",{C_POINTER},C_INT),
-				xIMG_isLBM = define_c_func(img,"+IMG_isLBM",{C_POINTER},C_INT),
-				xIMG_isPCX = define_c_func(img,"+IMG_isPCX",{C_POINTER},C_INT),
-				xIMG_isPNG = define_c_func(img,"+IMG_isPNG",{C_POINTER},C_INT),
-				xIMG_isPNM = define_c_func(img,"+IMG_isPNM",{C_POINTER},C_INT),
-				xIMG_isSVG = define_c_func(img,"+IMG_isSVG",{C_POINTER},C_INT),
-				xIMG_isQOI = define_c_func(img,"+IMG_isQOI",{C_POINTER},C_INT),
-				xIMG_isTIF = define_c_func(img,"+IMG_isTIF",{C_POINTER},C_INT),
-				xIMG_isXCF = define_c_func(img,"+IMG_isXCF",{C_POINTER},C_INT),
-				xIMG_isXPM = define_c_func(img,"+IMG_isXPM",{C_POINTER},C_INT),
-				xIMG_isXV = define_c_func(img,"+IMG_isXV",{C_POINTER},C_INT),
-				xIMG_isWEBP = define_c_func(img,"+IMG_isWEBP",{C_POINTER},C_INT)
-				
+public constant xIMG_isAVIF = define_c_func(img,"+IMG_isAVIF",{C_POINTER},C_BOOL)
+
 public function IMG_isAVIF(atom src)
 	return c_func(xIMG_isAVIF,{src})
 end function
+
+public constant xIMG_isICO = define_c_func(img,"+IMG_isICO",{C_POINTER},C_BOOL)
 
 public function IMG_isICO(atom src)
 	return c_func(xIMG_isICO,{src})
 end function
 
+public constant xIMG_isCUR = define_c_func(img,"+IMG_isCUR",{C_POINTER},C_BOOL)
+
 public function IMG_isCUR(atom src)
 	return c_func(xIMG_isCUR,{src})
 end function
+
+public constant xIMG_isBMP = define_c_func(img,"+IMG_isBMP",{C_POINTER},C_BOOL)
 
 public function IMG_isBMP(atom src)
 	return c_func(xIMG_isBMP,{src})
 end function
 
+public constant xIMG_isGIF = define_c_func(img,"+IMG_isGIF",{C_POINTER},C_BOOL)
+
 public function IMG_isGIF(atom src)
 	return c_func(xIMG_isGIF,{src})
 end function
+
+public constant xIMG_isJPG = define_c_func(img,"+IMG_isJPG",{C_POINTER},C_BOOL)
 
 public function IMG_isJPG(atom src)
 	return c_func(xIMG_isJPG,{src})
 end function
 
+public constant xIMG_isJXL = define_c_func(img,"+IMG_isJXL",{C_POINTER},C_BOOL)
+
 public function IMG_isJXL(atom src)
 	return c_func(xIMG_isJXL,{src})
 end function
+
+public constant xIMG_isLBM = define_c_func(img,"+IMG_isLBM",{C_POINTER},C_BOOL)
 
 public function IMG_isLBM(atom src)
 	return c_func(xIMG_isLBM,{src})
 end function
 
+public constant xIMG_isPCX = define_c_func(img,"+IMG_isPCX",{C_POINTER},C_BOOL)
+
 public function IMG_isPCX(atom src)
 	return c_func(xIMG_isPCX,{src})
 end function
+
+public constant xIMG_isPNG = define_c_func(img,"+IMG_isPNG",{C_POINTER},C_BOOL)
 
 public function IMG_isPNG(atom src)
 	return c_func(xIMG_isPNG,{src})
 end function
 
+public constant xIMG_isPNM = define_c_func(img,"+IMG_isPNM",{C_POINTER},C_BOOL)
+
 public function IMG_isPNM(atom src)
 	return c_func(xIMG_isPNM,{src})
 end function
+
+public constant xIMG_isSVG = define_c_func(img,"+IMG_isSVG",{C_POINTER},C_BOOL)
 
 public function IMG_isSVG(atom src)
 	return c_func(xIMG_isSVG,{src})
 end function
 
+public constant xIMG_isQOI = define_c_func(img,"+IMG_isQOI",{C_POINTER},C_BOOL)
+
 public function IMG_isQOI(atom src)
 	return c_func(xIMG_isQOI,{src})
 end function
+
+public constant xIMG_isTIF = define_c_func(img,"+IMG_isTIF",{C_POINTER},C_BOOL)
 
 public function IMG_isTIF(atom src)
 	return c_func(xIMG_isTIF,{src})
 end function
 
+public constant xIMG_isXCF = define_c_func(img,"+IMG_isXCF",{C_POINTER},C_BOOL)
+
 public function IMG_isXCF(atom src)
 	return c_func(xIMG_isXCF,{src})
 end function
+
+public constant xIMG_isXPM = define_c_func(img,"+IMG_isXPM",{C_POINTER},C_BOOL)
 
 public function IMG_isXPM(atom src)
 	return c_func(xIMG_isXPM,{src})
 end function
 
+public constant xIMG_isXV = define_c_func(img,"+IMG_isXV",{C_POINTER},C_BOOL)
+
 public function IMG_isXV(atom src)
 	return c_func(xIMG_isXV,{src})
 end function
 
+public constant xIMG_isWEBP = define_c_func(img,"+IMG_isWEBP",{C_POINTER},C_BOOL)
+
+public function IMG_isWEBP(atom src)
+	return c_func(xIMG_isWEBP,{src})
+end function
+
 public constant xIMG_LoadAVIF_IO = define_c_func(img,"+IMG_LoadAVIF_IO",{C_POINTER},C_POINTER)
 
-public function IMG_LoadAVIF_RW(atom src)
+public function IMG_LoadAVIF_IO(atom src)
 	return c_func(xIMG_LoadAVIF_IO,{src})
 end function
 
 public constant xIMG_LoadICO_IO = define_c_func(img,"+IMG_LoadICO_IO",{C_POINTER},C_POINTER)
 
-public function IMG_LoadICO_RW(atom src)
+public function IMG_LoadICO_IO(atom src)
 	return c_func(xIMG_LoadICO_IO,{src})
 end function
 
@@ -201,7 +203,7 @@ end function
 
 public constant xIMG_LoadGIF_IO = define_c_func(img,"+IMG_LoadGIF_IO",{C_POINTER},C_POINTER)
 
-public function IMG_LoadGIF_RW(atom src)
+public function IMG_LoadGIF_IO(atom src)
 	return c_func(xIMG_LoadGIF_IO,{src})
 end function
 
@@ -291,8 +293,8 @@ end function
 
 public constant xIMG_LoadSizedSVG_IO = define_c_func(img,"+IMG_LoadSizedSVG_IO",{C_POINTER,C_INT,C_INT},C_POINTER)
 
-public function IMG_LoadSizedSVG_IO(atom src,atom w,atom h)
-	return c_func(xIMG_LoadSizedSVG_IO,{src,w,h})
+public function IMG_LoadSizedSVG_IO(atom src,atom width,atom height)
+	return c_func(xIMG_LoadSizedSVG_IO,{src,width,height})
 end function
 
 public constant xIMG_ReadXPMFromArray = define_c_func(img,"+IMG_ReadXPMFromArray",{C_POINTER},C_POINTER)
@@ -307,28 +309,40 @@ public function IMG_ReadXPMFromArrayToRGB888(atom xpm)
 	return c_func(xIMG_ReadXPMFromArrayToRGB888,{xpm})
 end function
 
-public constant xIMG_SavePNG_IO = define_c_func(img,"+IMG_SavePNG_IO",{C_POINTER,C_POINTER,C_INT},C_INT)
+public constant xIMG_SaveAVIF = define_c_func(img,"+IMG_SaveAVIF",{C_POINTER,C_STRING,C_INT},C_BOOL)
 
-public function IMG_SavePNG_IO(atom surf,atom dst,atom fs)
-	return c_func(xIMG_SavePNG_IO,{surf,dst,fs})
+public function IMG_SaveAVIF(atom surface,sequence file,atom quality)
+	return c_func(xIMG_SaveAVIF,{surface,file,quality})
 end function
 
-public constant xIMG_SavePNG = define_c_func(img,"+IMG_SavePNG",{C_POINTER,C_STRING},C_INT)
+public constant xIMG_SaveAVIF_IO = define_c_func(img,"+IMG_SaveAVIF_IO",{C_POINTER,C_POINTER,C_BOOL,C_INT},C_BOOL)
 
-public function IMG_SavePNG(atom surf,sequence file)
-	return IMG_SavePNG_IO(surf,SDL_IOFromFile(file,"wb"),1)
+public function IMG_SaveAVIF_IO(atom surface,atom dst,atom closeio,atom quality)
+	return c_func(xIMG_SaveAVIF_IO,{surface,dst,closeio,quality})
 end function
 
-public constant xIMG_SaveJPG_IO = define_c_func(img,"+IMG_SaveJPG_IO",{C_POINTER,C_POINTER,C_INT,C_INT},C_INT)
+public constant xIMG_SavePNG_IO = define_c_func(img,"+IMG_SavePNG_IO",{C_POINTER,C_POINTER,C_BOOL},C_BOOL)
 
-public function IMG_SaveJPG_IO(atom surf,atom dst,atom fs,atom quality)
-	return c_func(xIMG_SaveJPG_IO,{surf,dst,fs,quality})
+public function IMG_SavePNG_IO(atom surface,atom dst,atom closeio)
+	return c_func(xIMG_SavePNG_IO,{surface,dst,closeio})
 end function
 
-public constant xIMG_SaveJPG = define_c_func(img,"+IMG_SaveJPG",{C_POINTER,C_STRING,C_INT},C_INT)
+public constant xIMG_SavePNG = define_c_func(img,"+IMG_SavePNG",{C_POINTER,C_STRING},C_BOOL)
 
-public function IMG_SaveJPG(atom surf,sequence file,atom quality)
-	return IMG_SaveJPG_IO(surf, SDL_IOFromFile(file,"wb"),1,quality)
+public function IMG_SavePNG(atom surface,sequence file)
+	return c_func(xIMG_SavePNG_IO,{surface,file,0})
+end function
+
+public constant xIMG_SaveJPG_IO = define_c_func(img,"+IMG_SaveJPG_IO",{C_POINTER,C_POINTER,C_BOOL,C_INT},C_BOOL)
+
+public function IMG_SaveJPG_IO(atom surface,atom dst,atom closeio,atom quality)
+	return c_func(xIMG_SaveJPG_IO,{surface,dst,closeio,quality})
+end function
+
+public constant xIMG_SaveJPG = define_c_func(img,"+IMG_SaveJPG",{C_POINTER,C_STRING,C_INT},C_BOOL)
+
+public function IMG_SaveJPG(atom surface,sequence file,atom quality)
+	return c_func(xIMG_SaveJPG_IO,{surface,file,0,quality})
 end function
 
 public constant IMG_Animation = define_c_struct({
@@ -340,26 +354,26 @@ public constant IMG_Animation = define_c_struct({
 
 public constant xIMG_LoadAnimation_IO = define_c_func(img,"+IMG_LoadAnimation_IO",{C_POINTER,C_BOOL},C_POINTER)
 
-public function IMG_LoadAnimation_IO(atom src,atom fs)
-	return c_func(xIMG_LoadAnimation_IO,{src,fs})
+public function IMG_LoadAnimation_IO(atom src,atom closeio)
+	return c_func(xIMG_LoadAnimation_IO,{src,closeio})
 end function
 
 public constant xIMG_LoadAnimation = define_c_func(img,"+IMG_LoadAnimation",{C_STRING},C_POINTER)
 
 public function IMG_LoadAnimation(sequence file)
-	return IMG_LoadAnimation_IO(SDL_IOFromFile(file,"rb"),1)
+	return c_func(xIMG_LoadAnimation_IO,{file,0})
 end function
 
 public constant xIMG_LoadAnimationTyped_IO = define_c_func(img,"+IMG_LoadAnimationTyped_IO",{C_POINTER,C_BOOL,C_STRING},C_POINTER)
 
-public function IMG_LoadAnimationTyped_IO(atom src,atom fs,sequence t)
-	return c_func(xIMG_LoadAnimationTyped_IO,{src,fs,t})
+public function IMG_LoadAnimationTyped_IO(atom src,atom closeio,sequence xtype)
+	return c_func(xIMG_LoadAnimationTyped_IO,{src,closeio,xtype})
 end function
 
 public constant xIMG_FreeAnimation = define_c_proc(img,"+IMG_FreeAnimation",{C_POINTER})
 
-public procedure IMG_FreeAnimation(atom ani)
-	c_proc(xIMG_FreeAnimation,{ani})
+public procedure IMG_FreeAnimation(atom anim)
+	c_proc(xIMG_FreeAnimation,{anim})
 end procedure
 
 public constant xIMG_LoadGIFAnimation_IO = define_c_func(img,"+IMG_LoadGIFAnimation_IO",{C_POINTER},C_POINTER)
@@ -373,4 +387,4 @@ public constant xIMG_LoadWEBPAnimation_IO = define_c_func(img,"+IMG_LoadWEBPAnim
 public function IMG_LoadWEBPAnimation_IO(atom src)
 	return c_func(xIMG_LoadWEBPAnimation_IO,{src})
 end function
-­193.30
+­7.16
