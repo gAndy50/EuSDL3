@@ -1,7 +1,9 @@
 include std/ffi.e
 include std/machine.e
 
-include SDL3.e
+include SDL.e
+
+public constant SDL_AsyncIO = C_POINTER
 
 public enum type SDL_AsyncIOTaskType
 	SDL_ASYNCIO_TASK_READ = 0,
@@ -9,7 +11,7 @@ public enum type SDL_AsyncIOTaskType
 	SDL_ASYNCIO_TASK_CLOSE
 end type
 
-public enum type SDL_ASyncIOResult
+public enum type SDL_AsyncIOResult
 	SDL_ASYNCIO_COMPLETE = 0,
 	SDL_ASYNCIO_FAILURE,
 	SDL_ASYNCIO_CANCELED
@@ -17,7 +19,7 @@ end type
 
 public constant SDL_AsyncIOOutcome = define_c_struct({
 	C_POINTER, --asyncio
-	C_INT, --tasktype
+	C_INT, --type
 	C_INT, --result
 	C_POINTER, --buffer
 	C_UINT64, --offset
@@ -34,26 +36,26 @@ end function
 
 public constant xSDL_GetAsyncIOSize = define_c_func(sdl,"+SDL_GetAsyncIOSize",{C_POINTER},C_INT64)
 
-public function SDL_GetAsyncIOSize(atom sync)
-	return c_func(xSDL_GetAsyncIOSize,{sync})
+public function SDL_GetAsyncIOSize(atom asyncio)
+	return c_func(xSDL_GetAsyncIOSize,{asyncio})
 end function
 
 public constant xSDL_ReadAsyncIO = define_c_func(sdl,"+SDL_ReadAsyncIO",{C_POINTER,C_POINTER,C_UINT64,C_UINT64,C_POINTER,C_POINTER},C_BOOL)
 
-public function SDL_ReadAsyncIO(atom sync,atom ptr,atom offset,atom size,atom queue,atom userdata)
-	return c_func(xSDL_ReadAsyncIO,{sync,ptr,offset,size,queue,userdata})
+public function SDL_ReadAsyncIO(atom asyncio,atom ptr,atom offset,atom size,atom queue,atom userdata)
+	return c_func(xSDL_ReadAsyncIO,{asyncio,ptr,offset,size,queue,userdata})
 end function
 
 public constant xSDL_WriteAsyncIO = define_c_func(sdl,"+SDL_WriteAsyncIO",{C_POINTER,C_POINTER,C_UINT64,C_UINT64,C_POINTER,C_POINTER},C_BOOL)
 
-public function SDL_WriteAsyncIO(atom sync,atom ptr,atom offset,atom size,atom queue,atom userdata)
-	return c_func(xSDL_WriteAsyncIO,{sync,ptr,offset,size,queue,userdata})
+public function SDL_WriteAsyncIO(atom asyncio,atom ptr,atom offset,atom size,atom queue,atom userdata)
+	return c_func(xSDL_WriteAsyncIO,{asyncio,ptr,offset,size,queue,userdata})
 end function
 
 public constant xSDL_CloseAsyncIO = define_c_func(sdl,"+SDL_CloseAsyncIO",{C_POINTER,C_BOOL,C_POINTER,C_POINTER},C_BOOL)
 
-public function SDL_CloseAsyncIO(atom sync,atom _flush,atom queue,atom userdata)
-	return c_func(xSDL_CloseAsyncIO,{sync,_flush,queue,userdata})
+public function SDL_CloseASyncIO(atom asyncio,atom flush,atom queue,atom userdata)
+	return c_func(xSDL_CloseAsyncIO,{asyncio,flush,queue,userdata})
 end function
 
 public constant xSDL_CreateAsyncIOQueue = define_c_func(sdl,"+SDL_CreateAsyncIOQueue",{},C_POINTER)
@@ -91,4 +93,4 @@ public constant xSDL_LoadFileAsync = define_c_func(sdl,"+SDL_LoadFileAsync",{C_S
 public function SDL_LoadFileAsync(sequence file,atom queue,atom userdata)
 	return c_func(xSDL_LoadFileAsync,{file,queue,userdata})
 end function
-­92.56
+­94.56

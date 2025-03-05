@@ -1,75 +1,107 @@
 include std/ffi.e
 include std/machine.e
 
-include SDL3.e
+include SDL.e
 
---SDL_SpinLock - C_INT
+include SDL_stdinc.e
 
-export constant xSDL_AtomicTryLock = define_c_func(sdl,"+SDL_AtomicTryLock",{C_POINTER},C_BOOL)
+public constant SDL_SPINLOCK = C_INT
 
-public function SDL_AtomicTryLock(atom lock)
-	return c_func(xSDL_AtomicTryLock,{lock})
+public constant xSDL_TryLockSpinlock = define_c_func(sdl,"+SDL_TryLockSpinlock",{C_POINTER},C_BOOL)
+
+public function SDL_TryLockSpinlock(atom lock)
+	return c_func(xSDL_TryLockSpinlock,{lock})
 end function
 
-export constant xSDL_AtomicLock = define_c_proc(sdl,"+SDL_AtomicLock",{C_POINTER})
+public constant xSDL_LockSpinlock = define_c_proc(sdl,"+SDL_LockSpinlock",{C_POINTER})
 
-public procedure SDL_AtomicLock(atom lock)
-	c_proc(xSDL_AtomicLock,{lock})
+public procedure SDL_LockSpinlock(atom lock)
+	c_proc(xSDL_LockSpinlock,{lock})
 end procedure
 
-export constant xSDL_AtomicUnlock = define_c_proc(sdl,"+SDL_AtomicUnlock",{C_POINTER})
+public constant xSDL_UnlockSpinlock = define_c_proc(sdl,"+SDL_UnlockSpinlock",{C_POINTER})
 
-public procedure SDL_AtomicUnlock(atom lock)
-	c_proc(xSDL_AtomicUnlock,{lock})
+public procedure SDL_UnlockSpinlock(atom lock)
+	c_proc(xSDL_UnlockSpinlock,{lock})
 end procedure
 
-export constant xSDL_MemoryBarrierReleaseFunction = define_c_proc(sdl,"+SDL_MemoryBarrierReleaseFunction",{})
+public constant xSDL_MemoryBarrierReleaseFunction = define_c_proc(sdl,"+SDL_MemoryBarrierReleaseFunction",{})
 
 public procedure SDL_MemoryBarrierReleaseFunction()
 	c_proc(xSDL_MemoryBarrierReleaseFunction,{})
 end procedure
 
---SDL_AtomicInt typedefstruct {int value}
+public constant xSDL_MemoryBarrierAcquireFunction = define_c_proc(sdl,"+SDL_MemoryBarrierAcquireFunction",{})
 
-export constant xSDL_AtomicCAS = define_c_func(sdl,"+SDL_AtomicCAS",{C_POINTER,C_INT,C_INT},C_BOOL)
+public procedure SDL_MemoryBarrierAcquireFunction()
+	c_proc(xSDL_MemoryBarrierAcquireFunction,{})
+end procedure
 
-public function SDL_AtomicCAS(atom a,atom old,atom new)
-	return c_func(xSDL_AtomicCAS,{a,old,new})
+public constant SDL_AtomicInt = define_c_struct({
+	C_INT --value
+})
+
+public constant xSDL_CompareAndSwapAtomicInt = define_c_func(sdl,"+SDL_CompareAndSwapAtomicInt",{C_POINTER,C_INT,C_INT},C_BOOL)
+
+public function SDL_CompareAndSwapAtomicInt(atom a,atom oldval,atom newval)
+	return c_func(xSDL_CompareAndSwapAtomicInt,{a,oldval,newval})
 end function
 
-export constant xSDL_AtomicSet = define_c_func(sdl,"+SDL_AtomicSet",{C_POINTER,C_INT},C_INT)
+public constant xSDL_SetAtomicInt = define_c_func(sdl,"+SDL_SetAtomicInt",{C_POINTER,C_INT},C_INT)
 
-public function SDL_AtomicSet(atom a,atom v)
-	return c_func(xSDL_AtomicSet,{a,v})
+public function SDL_SetAtomicInt(atom a,atom v)
+	return c_func(xSDL_SetAtomicInt,{a,v})
 end function
 
-export constant xSDL_AtomicGet = define_c_func(sdl,"+SDL_AtomicGet",{C_POINTER},C_INT)
+public constant xSDL_GetAtomicInt = define_c_func(sdl,"+SDL_GetAtomicInt",{C_POINTER},C_INT)
 
-public function SDL_AtomicGet(atom a)
-	return c_func(xSDL_AtomicGet,{a})
+public function SDL_GetAtomicInt(atom a)
+	return c_func(xSDL_GetAtomicInt,{a})
 end function
 
-export constant xSDL_AtomicAdd = define_c_func(sdl,"+SDL_AtomicAdd",{C_POINTER,C_INT},C_INT)
+public constant xSDL_AddAtomicInt = define_c_func(sdl,"+SDL_AddAtomicInt",{C_POINTER,C_INT},C_INT)
 
-public function SDL_AtomicAdd(atom a,atom v)
-	return c_func(xSDL_AtomicAdd,{a,v})
+public function SDL_AddAtomicInt(atom a,atom v)
+	return c_func(xSDL_AddAtomicInt,{a,v})
 end function
 
-export constant xSDL_AtomicCASPtr = define_c_func(sdl,"+SDL_AtomicCASPtr",{C_POINTER,C_POINTER,C_POINTER},C_BOOL)
+public constant SDL_AtomicU32 = define_c_struct({
+	C_UINT32 --value
+})
 
-public function SDL_AtomicCASPtr(atom a,atom old,atom new)
-	return c_func(xSDL_AtomicCASPtr,{a,old,new})
+public constant xSDL_CompareAndSwapAtomicU32 = define_c_func(sdl,"+SDL_CompareAndSwapAtomicU32",{C_POINTER,C_UINT32,C_UINT32},C_BOOL)
+
+public function SDL_CompareAndSwapAtomicU32(atom a,atom oldval,atom newval)
+	return c_func(xSDL_CompareAndSwapAtomicU32,{a,oldval,newval})
 end function
 
-export constant xSDL_AtomicSetPtr = define_c_func(sdl,"+SDL_AtomicSetPtr",{C_POINTER,C_POINTER},C_POINTER)
+public constant xSDL_SetAtomicU32 = define_c_func(sdl,"+SDL_SetAtomicU32",{C_POINTER,C_UINT32},C_UINT32)
 
-public function SDL_AtomicSetPtr(atom a,atom v)
-	return c_func(xSDL_AtomicSetPtr,{a,v})
+public function SDL_SetAtomicU32(atom a,atom v)
+	return c_func(xSDL_SetAtomicU32,{a,v})
 end function
 
-export constant xSDL_AtomicGetPtr = define_c_func(sdl,"+SDL_ATomicGetPtr",{C_POINTER},C_POINTER)
+public constant xSDL_GetAtomicU32 = define_c_func(sdl,"+SDL_GetAtomicU32",{C_POINTER},C_UINT32)
 
-public function SDL_AtomicGetPtr(atom a)
-	return c_func(xSDL_AtomicGetPtr,{a})
+public function SDL_GetAtomicU32(atom a)
+	return c_func(xSDL_GetAtomicU32,{a})
 end function
-­73.37
+
+public constant xSDL_CompareAndSwapAtomicPointer = define_c_func(sdl,"+SDL_CompareAndSwapAtomicPointer",{C_POINTER,C_POINTER,C_POINTER},C_BOOL)
+
+public function SDL_CompareAndSwapAtomicPointer(atom a,atom oldval,atom newval)
+	return c_func(xSDL_CompareAndSwapAtomicPointer,{a,oldval,newval})
+end function
+
+public constant xSDL_SetAtomicPointer = define_c_func(sdl,"+SDL_SetAtomicPointer",{C_POINTER,C_POINTER},C_POINTER)
+
+public function SDL_SetAtomicPointer(atom a,atom v)
+	return c_func(xSDL_SetAtomicPointer,{a,v})
+end function
+
+public constant xSDL_GetAtomicPointer = define_c_func(sdl,"+SDL_GetAtomicPointer",{C_POINTER},C_POINTER)
+
+public function SDL_GetAtomicPointer(atom a)
+	return c_func(xSDL_GetAtomicPointer,{a})
+end function
+­105.41
