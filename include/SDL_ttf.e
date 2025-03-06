@@ -7,7 +7,7 @@
 include std/ffi.e
 include std/os.e
 
-include sdl.e
+include SDL.e
 
 public atom ttf
 
@@ -63,7 +63,7 @@ end function
 public constant xTTF_OpenFont = define_c_func(ttf,"+TTF_OpenFont",{C_STRING,C_FLOAT},C_POINTER)
 
 public function TTF_OpenFont(sequence file,atom ptsize)
-	return c_func(TTF_OpenFont,{file,ptsize})
+	return c_func(xTTF_OpenFont,{file,ptsize})
 end function
 
 public constant xTTF_OpenFontWithProperties = define_c_func(ttf,"+TTF_OpenFontWithProperties",{C_UINT32},C_POINTER)
@@ -805,4 +805,4 @@ public constant xTTF_WasInit = define_c_func(ttf,"+TTF_WasInit",{},C_INT)
 public function TTF_WasInit()
 	return c_func(xTTF_WasInit,{})
 end function
-­65.37
+­61.12
