@@ -54,8 +54,9 @@ atom w = 50 -- width and height should be > 0
 atom h = 50 
 atom scale = 4.0  
   
-atom pw=allocate(4)  -- it seems it want pointer 
-atom ph=allocate(4)  
+--Not needed anymore
+--atom pw=allocate(4)  -- it seems it want pointer 
+--atom ph=allocate(4)  
  
  atom key = 0 
   
@@ -63,9 +64,9 @@ atom text_rect = allocate_struct(SDL_FRect,{w/scale,h/scale,w,h})
   
 while running = 1 do  
 	  
-	SDL_GetRenderOutputSize(render,pw,ph) -- it seems it want pointer 
+	SDL_GetRenderOutputSize(render)  --pointer no longer needed by end-user
 	SDL_SetRenderScale(render,scale,scale)  
-	SDL_GetTextureSize(texture,pw,ph)  -- it seems it want pointer 
+	SDL_GetTextureSize(texture)    --pointer no longer needed by end-user
 	  
 	while SDL_PollEvent(event) != 0 do  
 		event_type = peek_type(event,C_UINT32)  
@@ -84,4 +85,4 @@ SDL_DestroyTexture(texture)
 SDL_DestroyRenderer(render)  
 SDL_DestroyWindow(win)  
 SDL_Quit()  
-­38.42
+­69.70
