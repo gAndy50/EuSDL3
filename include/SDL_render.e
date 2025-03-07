@@ -484,8 +484,22 @@ end function
 
 public constant xSDL_GetRenderScale = define_c_func(sdl,"+SDL_GetRenderScale",{C_POINTER,C_POINTER,C_POINTER},C_BOOL)
 
-public function SDL_GetRenderScale(atom render,atom x,atom y)
-	return c_func(xSDL_GetRenderScale,{render,x,y})
+public function SDL_GetRenderScale(atom render)
+	
+	atom x = 0, y = 0
+	atom px = allocate_data(sizeof(C_FLOAT))
+	atom py = allocate_data(sizeof(C_FLOAT))
+	
+	if c_func(xSDL_GetRenderScale,{render,px,py}) then
+		x = peek_type(px,C_FLOAT)
+		y = peek_type(py,C_FLOAT)
+	end if
+	
+	free(px)
+	free(py)
+	
+	return {x,y}
+
 end function
 
 public constant xSDL_SetRenderDrawColor = define_c_func(sdl,"+SDL_SetRenderDrawColor",{C_POINTER,C_UINT8,C_UINT8,C_UINT8,C_UINT8},C_BOOL)
@@ -708,4 +722,4 @@ public constant xSDL_RenderDebugTextFormat = define_c_func(sdl,"+SDL_RenderDebug
 public function SDL_RenderDebugTextFormat(atom render,atom x,atom y,sequence str,object xx)
 	return c_func(xSDL_RenderDebugTextFormat,{render,x,y,str,xx})
 end function
-­177.13
+­501.13
