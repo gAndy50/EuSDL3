@@ -21,17 +21,17 @@ public constant SDL_Vertex = define_c_struct({
 })
 
 public enum type SDL_TextureAccess
-	 SDL_TEXTUREACCESS_STATIC = 0,    /**< Changes rarely, not lockable */
-    SDL_TEXTUREACCESS_STREAMING, /**< Changes frequently, lockable */
-    SDL_TEXTUREACCESS_TARGET     /**< Texture can be used as a render target */
+	 SDL_TEXTUREACCESS_STATIC = 0,    --/**< Changes rarely, not lockable */
+    SDL_TEXTUREACCESS_STREAMING, --/**< Changes frequently, lockable */
+    SDL_TEXTUREACCESS_TARGET     --/**< Texture can be used as a render target */
 end type
 
 public enum type SDL_RendererLogicalPresentation
-	SDL_LOGICAL_PRESENTATION_DISABLED = 0,  /**< There is no logical size in effect */
-    SDL_LOGICAL_PRESENTATION_STRETCH,   /**< The rendered content is stretched to the output resolution */
-    SDL_LOGICAL_PRESENTATION_LETTERBOX, /**< The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars */
-    SDL_LOGICAL_PRESENTATION_OVERSCAN,  /**< The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds */
-    SDL_LOGICAL_PRESENTATION_INTEGER_SCALE   /**< The rendered content is scaled up by integer multiples to fit the output resolution */
+	SDL_LOGICAL_PRESENTATION_DISABLED = 0,  --/**< There is no logical size in effect */
+    SDL_LOGICAL_PRESENTATION_STRETCH,   --/**< The rendered content is stretched to the output resolution */
+    SDL_LOGICAL_PRESENTATION_LETTERBOX, --/**< The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars */
+    SDL_LOGICAL_PRESENTATION_OVERSCAN,  --/**< The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds */
+    SDL_LOGICAL_PRESENTATION_INTEGER_SCALE   --/**< The rendered content is scaled up by integer multiples to fit the output resolution */
 end type
 
 public constant SDL_Texture = define_c_struct({
@@ -140,14 +140,42 @@ public constant SDL_PROP_RENDERER_GPU_DEVICE_POINTER                      =  "SD
 
 public constant xSDL_GetRenderOutputSize = define_c_func(sdl,"+SDL_GetRenderOutputSize",{C_POINTER,C_POINTER,C_POINTER},C_BOOL)
 
-public function SDL_GetRenderOutputSize(atom renderer,atom w,atom h)
-	return c_func(xSDL_GetRenderOutputSize,{renderer,w,h})
+public function SDL_GetRenderOutputSize(atom renderer)
+	
+	atom w = 0, h = 0
+	atom pw = allocate_data(sizeof(C_FLOAT))
+	atom ph = allocate_data(sizeof(C_FLOAT))
+	
+	if c_func(xSDL_GetRenderOutputSize,{renderer,pw,ph}) then
+		w = peek_type(pw,C_FLOAT)
+		h = peek_type(ph,C_FLOAT)
+	end if
+	
+	free(pw)
+	free(ph)
+	
+	return {w,h}
+
 end function
 
 public constant xSDL_GetCurrentRenderOutputSize = define_c_func(sdl,"+SDL_GetCurrentRenderOutputSize",{C_POINTER,C_POINTER,C_POINTER},C_BOOL)
 
-public function SDL_GetCurrentRenderOutputSize(atom renderer,atom w,atom h)
-	return c_func(xSDL_GetCurrentRenderOutputSize,{renderer,w,h})
+public function SDL_GetCurrentRenderOutputSize(atom renderer)
+	
+	atom w = 0, h = 0
+	atom pw = allocate_data(sizeof(C_FLOAT))
+	atom ph = allocate_data(sizeof(C_FLOAT))
+	
+	if c_func(xSDL_GetCurrentRenderOutputSize,{renderer,pw,ph}) then
+		w = peek_type(pw,C_FLOAT)
+		h = peek_type(ph,C_FLOAT)
+	end if
+	
+	free(pw)
+	free(ph)
+	
+	return {w,h}
+
 end function
 
 public constant xSDL_CreateTexture = define_c_func(sdl,"+SDL_CreateTexture",{C_POINTER,C_INT,C_INT,C_INT,C_INT},C_POINTER)
@@ -233,8 +261,21 @@ end function
 
 public constant xSDL_GetTextureSize = define_c_func(sdl,"+SDL_GetTextureSize",{C_POINTER,C_POINTER,C_POINTER},C_BOOL)
 
-public function SDL_GetTextureSize(atom texture,atom w,atom h)
-	return c_func(xSDL_GetTextureSize,{texture,w,h})
+public function SDL_GetTextureSize(atom texture)
+
+	atom w = 0, h = 0
+	atom pw = allocate_data(sizeof(C_FLOAT))
+	atom ph = allocate_data(sizeof(C_FLOAT))
+	
+	if c_func(xSDL_GetTextureSize,{texture,pw,ph}) then
+		w = peek_type(pw,C_FLOAT)
+		h = peek_type(ph,C_FLOAT)
+	end if
+	
+	free(pw)
+	free(ph)
+	
+	return {w,h}
 end function
 
 public constant xSDL_SetTextureColorMod = define_c_func(sdl,"+SDL_SetTextureColorMod",{C_POINTER,C_UINT8,C_UINT8,C_UINT8},C_BOOL)
@@ -667,4 +708,4 @@ public constant xSDL_RenderDebugTextFormat = define_c_func(sdl,"+SDL_RenderDebug
 public function SDL_RenderDebugTextFormat(atom render,atom x,atom y,sequence str,object xx)
 	return c_func(xSDL_RenderDebugTextFormat,{render,x,y,str,xx})
 end function
-­64.53
+­177.13
