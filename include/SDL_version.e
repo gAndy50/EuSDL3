@@ -6,7 +6,7 @@ include SDL_stdinc.e
 
 public constant SDL_MAJOR_VERSION = 3
 public constant SDL_MINOR_VERSION = 2
-public constant SDL_MICRO_VERSION = 8
+public constant SDL_MICRO_VERSION = 10
 
 public constant xSDL_GetVersion = define_c_func(sdl,"+SDL_GetVersion",{},C_INT)
 
@@ -19,4 +19,4 @@ public constant xSDL_GetRevision = define_c_func(sdl,"+SDL_GetRevision",{},C_STR
 public function SDL_GetRevision()
 	return c_func(xSDL_GetRevision,{})
 end function
-­9.37
+­9.38
