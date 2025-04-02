@@ -13,7 +13,7 @@ public atom ttf
 
 public constant SDL_TTF_MAJOR_VERSION = 3
 public constant SDL_TFF_MINOR_VERSION = 2
-public constant SDL_TFF_MICRO_VERSION = 0
+public constant SDL_TFF_MICRO_VERSION = 2
 
 ifdef WINDOWS then
 	ttf = open_dll("SDL3_ttf.dll")
@@ -805,4 +805,4 @@ public constant xTTF_WasInit = define_c_func(ttf,"+TTF_WasInit",{},C_INT)
 public function TTF_WasInit()
 	return c_func(xTTF_WasInit,{})
 end function
-­61.12
+­16.41
