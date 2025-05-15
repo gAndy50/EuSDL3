@@ -2,7 +2,7 @@
 --EuSDL 3
 --Written by Andy P.
 --SDL3 wrapper for OpenEuphoria
---SDL Ver: 3.2.10
+--SDL Ver: 3.2.14
 --Eu Ver: 4.1.0 Beta 2
 --Copyright (c) 2025
 ---------------------------------
