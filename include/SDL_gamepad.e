@@ -23,6 +23,7 @@ public enum type SDL_GamepadType
     SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_LEFT,
     SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT,
     SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR,
+    SDL_GAMEPAD_TYPE_GAMECUBE,
     SDL_GAMEPAD_TYPE_COUNT
 end type
 
@@ -549,4 +550,4 @@ public constant xSDL_GetGamepadAppleSFSymbolsNameForAxis = define_c_func(sdl,"+S
 public function SDL_GetGamepadAppleSFSymbolsNameForAxis(atom gamepad,SDL_GamepadAxis axis)
 	return c_func(xSDL_GetGamepadAppleSFSymbolsNameForAxis,{gamepad,axis})
 end function
-­550.71
+­26.30
