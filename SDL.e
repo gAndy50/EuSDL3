@@ -20,7 +20,7 @@ ifdef WINDOWS then
 	sdl = open_dll("libSDL3.dylib")
 end ifdef
 
-if sdl = 0 then
+if sdl = -1 then
 	puts(1,"Failed to load SDL3!\n")
 	abort(0)
 end if
