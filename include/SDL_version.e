@@ -6,7 +6,7 @@ include SDL_stdinc.e
 
 public constant SDL_MAJOR_VERSION = 3
 public constant SDL_MINOR_VERSION = 2
-public constant SDL_MICRO_VERSION = 22
+public constant SDL_MICRO_VERSION = 24
 
 public constant xSDL_GetVersion = define_c_func(sdl,"+SDL_GetVersion",{},C_INT)
 
