@@ -398,4 +398,16 @@ public constant xSDL_GetSilenceValueForFormat = define_c_func(sdl,"+SDL_GetSilen
 public function SDL_GetSilenceValueForFormat(atom format)
 	return c_func(xSDL_GetSilenceValueForFormat,{format})
 end function
-­387.85
+
+public constant xSDL_PutAudioStreamDataNoCopy = define_c_func(sdl,"+SDL_PutAudioStreamDataNoCopy",{C_POINTER,C_POINTER,C_INT,C_POINTER,C_POINTER},C_BOOL)
+
+public function SDL_PutAudioStreamDataNoCopy(atom stream,object buf,atom len,object cb,object userdata)
+	return c_func(xSDL_PutAudioStreamDataNoCopy,{stream,buf,len,cb,userdata})
+end function
+
+public constant xSDL_PutAudioStreamPlanarData = define_c_func(sdl,"+SDL_PutAudioStreamPlanarData",{C_POINTER,C_POINTER,C_INT,C_INT},C_BOOL)
+
+public function SDL_PutAudioStreamPlanarData(atom stream,atom channel_buffers,atom num_channels,atom num_samples)
+	return c_func(xSDL_PutAudioStreamPlanarData,{stream,channel_buffers,num_channels,num_samples})
+end function
+­412.12

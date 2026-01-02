@@ -147,16 +147,52 @@ public function SDL_LoadBMP(sequence file)
 	return SDL_LoadBMP_IO(SDL_IOFromFile(file,"rb"),1)
 end function
 
+public constant xSDL_LoadPNG_IO = define_c_func(sdl,"+SDL_LoadPNG_IO",{C_POINTER,C_BOOL},C_POINTER)
+
+public function SDL_LoadPNG_IO(atom src,atom closeio)
+	return c_func(xSDL_LoadPNG_IO,{src,closeio})
+end function
+
+public constant xSDL_LoadPNG = define_c_func(sdl,"+SDL_LoadPNG",{C_STRING},C_POINTER)
+
+public function SDL_LoadPNG(sequence file)
+	return SDL_LoadPNG_IO(SDL_IOFromFile(file,"rb"),1)
+end function
+
 public constant xSDL_SaveBMP_IO = define_c_func(sdl,"+SDL_SaveBMP_IO",{C_POINTER,C_POINTER,C_BOOL},C_BOOL)
 
 public function SDL_SaveBMP_IO(atom surface,atom dst,atom closeio)
 	return c_func(xSDL_SaveBMP_IO,{surface,dst,closeio})
 end function
 
+public constant xSDL_SavePNG_IO = define_c_func(sdl,"+SDL_SavePNG_IO",{C_POINTER,C_POINTER,C_BOOL},C_BOOL)
+
+public function SDL_SavePNG_IO(atom surface,atom dst,atom closeio)
+	return c_func(xSDL_SavePNG_IO,{surface,dst,closeio})
+end function
+
 public constant xSDL_SaveBMP = define_c_func(sdl,"+SDL_SaveBMP",{C_POINTER,C_STRING},C_BOOL)
 
 public function SDL_SaveBMP(atom surface,sequence file)
 	return SDL_SaveBMP_IO(surface,SDL_IOFromFile(file,"wb"),1)
+end function
+
+public constant xSDL_SavePNG = define_c_func(sdl,"+SDL_SavePNG",{C_POINTER,C_STRING},C_BOOL)
+
+public function SDL_SavePNG(atom surface,sequence file)
+	return SDL_SavePNG_IO(surface,SDL_IOFromFile(file,"wb"),1)
+end function
+
+public constant xSDL_LoadSurface_IO = define_c_func(sdl,"+SDL_LoadSurface_IO",{C_POINTER,C_BOOL},C_POINTER)
+
+public function SDL_LoadSurface_IO(atom src,atom closeio)
+	return c_func(xSDL_LoadSurface_IO,{src,closeio})
+end function
+
+public constant xSDL_LoadSurface = define_c_func(sdl,"+SDL_LoadSurface",{C_STRING},C_POINTER)
+
+public function SDL_LoadSurface(sequence file)
+	return SDL_LoadSurface_IO(SDL_IOFromFile(file,"rb"),1)
 end function
 
 public constant xSDL_SetSurfaceRLE = define_c_func(sdl,"+SDL_SetSurfaceRLE",{C_POINTER,C_BOOL},C_BOOL)
@@ -392,4 +428,10 @@ public constant xSDL_StretchSurface = define_c_func(sdl,"+SDL_StretchSurface",{C
 public function SDL_StretchSurface(atom src,atom srcrect,atom dst,atom dstrect,SDL_ScaleMode scale)
 	return c_func(xSDL_StretchSurface,{src,srcrect,dst,dstrect,scale})
 end function
-­393.67
+
+public constant xSDL_RotateSurface = define_c_func(sdl,"+SDL_RotateSurface",{C_POINTER,C_FLOAT},C_POINTER)
+
+public function SDL_RotateSurface(atom surface,atom angle)
+	return c_func(xSDL_RotateSurface,{surface,angle})
+end function
+­435.50

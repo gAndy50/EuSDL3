@@ -758,4 +758,10 @@ public constant xSDL_GetWindowFromEvent = define_c_func(sdl,"+SDL_GetWindowFromE
 public function SDL_GetWindowFromEvent(atom event)
 	return c_func(xSDL_GetWindowFromEvent,{event})
 end function
-­294.52
+
+public constant xSDL_GetEventDescription = define_c_func(sdl,"+SDL_GetEventDescription",{C_POINTER,C_POINTER,C_INT},C_INT)
+
+public function SDL_GetEventDescription(atom event,atom buf,atom buflen)
+	return c_func(xSDL_GetEventDescription,{event,buf,buflen})
+end function
+­765.59

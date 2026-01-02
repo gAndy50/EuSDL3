@@ -113,4 +113,10 @@ public constant xSDL_GetSIMDAlignment = define_c_func(sdl,"+SDL_GetSIMDAlignment
 public function SDL_GetSIMDAlignment()
 	return c_func(xSDL_GetSIMDAlignment,{})
 end function
-­114.40
+
+public constant xSDL_GetSystemPageSize = define_c_func(sdl,"+SDL_GetSystemPageSize",{},C_INT)
+
+public function SDL_GetSystemPageSize()
+	return c_func(xSDL_GetSystemPageSize,{})
+end function
+­120.41

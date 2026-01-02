@@ -21,6 +21,15 @@ public enum type SDL_SystemTheme
 	SDL_SYSTEM_THEME_DARK
 end type
 
+public enum type SDL_ProgressState
+	SDL_PROGRESS_STATE_INVALID = -1,
+	SDL_PROGRESS_STATE_NONE = 0,
+	SDL_PROGRESS_STATE_INDETERMINATE,
+	SDL_PROGRESS_STATE_NORMAL,
+	SDL_PROGRESS_STATE_PAUSED,
+	SDL_PROGRESS_STATE_ERROR
+end type
+
 public constant SDL_DisplayMode = define_c_struct({
 	C_UINT32, --displayID
 	C_INT, --format SDL_PixelFormat
@@ -198,14 +207,52 @@ end function
 
 public constant xSDL_GetDisplayBounds = define_c_func(sdl,"+SDL_GetDisplayBounds",{C_UINT32,C_POINTER},C_BOOL)
 
-public function SDL_GetDisplayBounds(atom displayID,atom rect)
-	return c_func(xSDL_GetDisplayBounds,{displayID,rect})
+public function SDL_GetDisplayBounds(atom displayID)
+
+	atom x = 0, y = 0, w = 0, h = 0
+	atom px = allocate_data(sizeof(C_FLOAT))
+	atom py = allocate_data(sizeof(C_FLOAT))
+	atom pw = allocate_data(sizeof(C_FLOAT))
+	atom ph = allocate_data(sizeof(C_FLOAT))
+	
+	if c_func(xSDL_GetDisplayBounds,{displayID,px,py,pw,ph}) then
+		x = peek_type(px,C_FLOAT)
+		y = peek_type(py,C_FLOAT)
+		w = peek_type(pw,C_FLOAT)
+		h = peek_type(ph,C_FLOAT)
+	end if
+	
+	free(px)
+	free(py)
+	free(pw)
+	free(ph)
+	
+	return {x,y,w,h}
 end function
 
 public constant xSDL_GetDisplayUsableBound = define_c_func(sdl,"+SDL_GetDisplayUsableBound",{C_UINT32,C_POINTER},C_BOOL)
 
-public function SDL_GetDisplayUsableBound(atom displayID,atom rect)
-	return c_func(xSDL_GetDisplayUsableBound,{displayID,rect})
+public function SDL_GetDisplayUsableBound(atom displayID)
+
+	atom x = 0, y = 0, w = 0, h = 0
+	atom px = allocate_data(sizeof(C_FLOAT))
+	atom py = allocate_data(sizeof(C_FLOAT))
+	atom pw = allocate_data(sizeof(C_FLOAT))
+	atom ph = allocate_data(sizeof(C_FLOAT))
+	
+	if c_func(xSDL_GetDisplayUsableBound,{displayID,px,py,pw,ph}) then
+		x = peek_type(px,C_FLOAT)
+		y = peek_type(py,C_FLOAT)
+		w = peek_type(pw,C_FLOAT)
+		h = peek_type(ph,C_FLOAT)
+	end if
+	
+	free(px)
+	free(py)
+	free(pw)
+	free(ph)
+	
+	return {x,y,w,h}
 end function
 
 public constant xSDL_GetNaturalDisplayOrientation = define_c_func(sdl,"+SDL_GetNaturalDisplayOrientation",{C_UINT32},C_INT)
@@ -888,4 +935,28 @@ public constant xSDL_GL_DestroyContext = define_c_func(sdl,"+SDL_GL_DestroyConte
 public function SDL_GL_DestroyContext(atom context)
 	return c_func(xSDL_GL_DestroyContext,{context})
 end function
-­864.112
+
+public constant xSDL_SetWindowProgressState = define_c_func(sdl,"+SDL_SetWindowProgressState",{C_POINTER,C_INT},C_BOOL)
+
+public function SDL_SetWindowProgressState(atom window,SDL_ProgressState state)
+	return c_func(xSDL_SetWindowProgressState,{window,state})
+end function
+
+public constant xSDL_SetWindowProgressValue = define_c_func(sdl,"+SDL_SetWindowProgressValue",{C_POINTER,C_FLOAT},C_BOOL)
+
+public function SDL_SetWindowProgressValue(atom window,atom val)
+	return c_func(xSDL_SetWindowProgressValue,{window,val})
+end function
+
+public constant xSDL_GetWindowProgressState = define_c_func(sdl,"+SDL_GetWindowProgressState",{C_POINTER},C_INT)
+
+public function SDL_GetWindowProgressState(atom window)
+	return c_func(xSDL_GetWindowProgressState,{window})
+end function
+
+public constant xSDL_GetWindowProgressValue = define_c_func(sdl,"+SDL_GetWindowProgressValue",{C_POINTER},C_FLOAT)
+
+public function SDL_GetWindowProgressValue(atom window)
+	return c_func(xSDL_GetWindowProgressValue,{window})
+end function
+­960.52

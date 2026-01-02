@@ -41,6 +41,20 @@ public constant SDL_Texture = define_c_struct({
 	C_INT --refcount
 })
 
+public enum type SDL_ScaleMode
+	SDL_SCALEMODE_INVALID = -1,
+	SDL_SCALEMODE_NEAREST = 0,
+	SDL_SCALEMODE_LINEAR,
+	SDL_SCALEMODE_PIXELART
+end type
+
+public enum type SDL_TextureAddressMode
+	SDL_TEXTURE_ADDRESS_INVALID = -1,
+	SDL_TEXTURE_ADDRESS_AUTO = 0,
+	SDL_TEXTURE_ADDRESS_CLAMP,
+	SDL_TEXTURE_ADDRESS_WRAP
+end type
+
 public constant xSDL_GetNumRenderDrivers = define_c_func(sdl,"+SDL_GetNumRenderDrivers",{},C_INT)
 
 public function SDL_GetNumRenderDrivers()
@@ -722,4 +736,82 @@ public constant xSDL_RenderDebugTextFormat = define_c_func(sdl,"+SDL_RenderDebug
 public function SDL_RenderDebugTextFormat(atom render,atom x,atom y,sequence str,object xx)
 	return c_func(xSDL_RenderDebugTextFormat,{render,x,y,str,xx})
 end function
-­501.13
+
+public constant xSDL_CreateGPURenderer = define_c_func(sdl,"+SDL_CreateGPURenderer",{C_POINTER,C_POINTER},C_POINTER)
+
+public function SDL_CreateGPURenderer(atom device,atom window)
+	return c_func(xSDL_CreateGPURenderer,{device,window})
+end function
+
+public constant xSDL_GetGPURendererDevice = define_c_func(sdl,"+SDL_GetGPURendererDevice",{C_POINTER},C_POINTER)
+
+public function SDL_GetGPURendererDevice(atom render)
+	return c_func(xSDL_GetGPURendererDevice,{render})
+end function
+
+public constant xSDL_CreateGPURenderState = define_c_func(sdl,"+SDL_CreateGPURenderState",{C_POINTER,C_POINTER},C_POINTER)
+
+public function SDL_CreateGPURenderState(atom render,atom createinfo)
+	return c_func(xSDL_CreateGPURenderState,{render,createinfo})
+end function
+
+public constant xSDL_SetGPURenderStateFragmentUniforms = define_c_func(sdl,"+SDL_SetGPURenderStateFragmentUniforms",{C_POINTER,C_UINT32,C_POINTER,C_UINT32},C_BOOL)
+
+public function SDL_SetGPURenderStateFragmentUniforms(atom state,atom slot_index,object data,atom len)
+	return c_func(xSDL_SetGPURenderStateFragmentUniforms,{state,slot_index,data,len})
+end function
+
+public constant xSDL_SetGPURenderState = define_c_func(sdl,"+SDL_SetGPURenderState",{C_POINTER,C_POINTER},C_BOOL)
+
+public function SDL_SetGPURenderState(atom render,atom state)
+	return c_func(xSDL_SetGPURenderState,{render,state})
+end function
+
+public constant xSDL_DestroyGPURenderState = define_c_proc(sdl,"+SDL_DestroyGPURenderState",{C_POINTER})
+
+public procedure SDL_DestroyGPURenderState(atom state)
+	c_proc(xSDL_DestroyGPURenderState,{state})
+end procedure
+
+public constant xSDL_GetTexturePalette = define_c_func(sdl,"+SDL_GetTexturePalette",{C_POINTER},C_POINTER)
+
+public function SDL_GetTexturePalette(atom texture)
+	return c_func(xSDL_GetTexturePalette,{texture})
+end function
+
+public constant xSDL_SetTexturePalette = define_c_func(sdl,"+SDL_SetTexturePalette",{C_POINTER,C_POINTER},C_BOOL)
+
+public function SDL_SetTexturePalette(atom texture,atom palette)
+	return c_func(xSDL_SetTexturePalette,{texture,palette})
+end function
+
+public constant xSDL_RenderTexture9GridTiled = define_c_func(sdl,"+SDL_RenderTexture9GridTiled",{C_POINTER,C_POINTER,C_POINTER,C_FLOAT,C_FLOAT,C_FLOAT,C_FLOAT,C_FLOAT,C_POINTER,C_FLOAT},C_BOOL)
+
+public function SDL_RenderTexture9GridTiled(atom render,atom texture,atom srcrect,atom left_width,atom right_width,atom top_height,atom bottom_height,atom scale,atom dstrect,atom tileScale)
+	return c_func(xSDL_RenderTexture9GridTiled,{render,texture,srcrect,left_width,right_width,top_height,bottom_height,dstrect,tileScale})
+end function
+
+public constant xSDL_GetDefaultTextureScaleMode = define_c_func(sdl,"+SDL_GetDefaultTextureScaleMode",{C_POINTER,C_POINTER},C_BOOL)
+
+public function SDL_GetDefaultTextureScaleMode(atom render,atom scale_mode)
+	return c_func(xSDL_GetDefaultTextureScaleMode,{render,scale_mode})
+end function
+
+public constant xSDL_SetDefaultTextureScaleMode = define_c_func(sdl,"+SDL_SetDefaultTextureScaleMode",{C_POINTER,C_INT},C_BOOL)
+
+public function SDL_SetDefaultTextureScaleMode(atom render,SDL_ScaleMode mode)
+	return c_func(xSDL_SetDefaultTextureScaleMode,{render,mode})
+end function
+
+public constant xSDL_GetRenderTextureAddressMode = define_c_func(sdl,"+SDL_GetRenderTextureAddressMode",{C_POINTER,C_POINTER,C_POINTER},C_BOOL)
+
+public function SDL_GetRenderTextureAddressMode(atom render,atom u_mode,atom v_mode)
+	return c_func(xSDL_GetRenderTextureAddressMode,{render,u_mode,v_mode})
+end function
+
+public constant xSDL_SetRenderTextureAddressMode = define_c_func(sdl,"+SDL_SetRenderTextureAddressMode",{C_POINTER,C_INT,C_INT},C_BOOL)
+
+public function SDL_SetRenderTextureAddressMode(atom render,SDL_TextureAddressMode u_mode,SDL_TextureAddressMode v_mode)
+	return c_func(xSDL_SetRenderTextureAddressMode,{render,u_mode,v_mode})
+end function
+­815.71

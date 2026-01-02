@@ -1314,4 +1314,22 @@ public constant xSDL_GDKResumeGPU = define_c_proc(sdl,"+SDL_GDKResumeGPU",{C_POI
 public procedure SDL_GDKResumeGPU(atom device)
 	c_proc(xSDL_GDKResumeGPU,{device})
 end procedure
-­1315.35
+
+public constant xSDL_GetGPUDeviceProperties = define_c_func(sdl,"+SDL_GetGPUDeviceProperties",{C_POINTER},C_INT)
+
+public function SDL_GetGPUDeviceProperties(atom device)
+	return c_func(xSDL_GetGPUDeviceProperties,{device})
+end function
+
+public constant xSDL_GetPixelFormatFromGPUTextureFormat = define_c_func(sdl,"+SDL_GetPixelFormatFromGPUTextureFormat",{C_INT},C_INT)
+
+public function SDL_GetPixelFormatFromGPUTextureFormat(atom format)
+	return c_func(xSDL_GetPixelFormatFromGPUTextureFormat,{format})
+end function
+
+public constant xSDL_GetGPUTextureFormatFromPixelFormat = define_c_func(sdl,"+SDL_GetGPUTextureFormatFromPixelFormat",{C_INT},C_INT)
+
+public function SDL_GetGPUTextureFormatFromPixelFormat(atom format)
+	return c_func(xSDL_GetGPUTextureFormatFromPixelFormat,{format})
+end function
+­1333.64

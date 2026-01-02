@@ -104,4 +104,10 @@ public constant xSDL_GetAtomicPointer = define_c_func(sdl,"+SDL_GetAtomicPointer
 public function SDL_GetAtomicPointer(atom a)
 	return c_func(xSDL_GetAtomicPointer,{a})
 end function
-­105.41
+
+public constant xSDL_AddAtomicU32 = define_c_func(sdl,"+SDL_AddAtomicU32",{C_POINTER,C_INT},C_UINT32)
+
+public function SDL_AddAtomicU32(atom a,atom v)
+	return c_func(xSDL_AddAtomicU32,{a,v})
+end function
+­111.39

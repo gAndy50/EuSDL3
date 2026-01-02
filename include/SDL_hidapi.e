@@ -181,4 +181,10 @@ public constant xSDL_hid_ble_scan = define_c_proc(sdl,"+SDL_hid_ble_scan",{C_BOO
 public procedure SDL_hid_ble_scan(atom active)
 	c_proc(xSDL_hid_ble_scan,{active})
 end procedure
-­182.35
+
+public constant xSDL_hid_get_properties = define_c_func(sdl,"+SDL_hid_get_properties",{C_POINTER},C_INT)
+
+public function SDL_hid_get_properties(atom dev)
+	return c_func(xSDL_hid_get_properties,{dev})
+end function
+­188.45
