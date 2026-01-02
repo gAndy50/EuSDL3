@@ -25,6 +25,12 @@ public enum type SDL_CameraPosition
     SDL_CAMERA_POSITION_BACK_FACING
 end type
 
+public enum type SDL_CameraPermissionState
+	SDL_CAMERA_PERMISSION_STATE_DENIED = -1,
+	SDL_CAMERA_PERMISSION_STATE_PENDING = 0,
+	SDL_CAMERA_PERMISSION_STATE_APPROVED
+end type
+
 public constant xSDL_GetNumCameraDrivers = define_c_func(sdl,"+SDL_GetNumCameraDrivers",{},C_INT)
 
 public function SDL_GetNumCameraDrivers()
@@ -114,4 +120,4 @@ public constant xSDL_CloseCamera = define_c_proc(sdl,"+SDL_CloseCamera",{C_POINT
 public procedure SDL_CloseCamera(atom camera)
 	c_proc(xSDL_CloseCamera,{camera})
 end procedure
-­115.34
+­38.12
