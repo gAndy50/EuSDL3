@@ -26,8 +26,10 @@ printf(1,"Has LSX: %d\n",{SDL_HasLSX()})
 printf(1,"Has LASX: %d\n",{SDL_HasLASX()})
 printf(1,"System RAM: %d GB\n",{SDL_GetSystemRAM()})
 printf(1,"SIMD Realignment: %d\n",{SDL_GetSIMDAlignment()})
+printf(1,"Page Size: %d\n",{SDL_GetSystemPageSize()})
 
-printf(1,"SDL Version: %d",{SDL_GetVersion()})
+printf(1,"SDL Version: %d\n",{SDL_GetVersion()})
+printf(1,"SDL Revision: %s\n",{SDL_GetRevision()})
 
 while 1 do
 	key = get_key()
@@ -35,4 +37,4 @@ while 1 do
 		exit
 	end if
 end while
-­30.25
+­29.53
