@@ -24,6 +24,7 @@ public enum type SDL_GamepadType
     SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT,
     SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR,
     SDL_GAMEPAD_TYPE_GAMECUBE,
+    SDL_GAMEPAD_TYPE_STEAM,
     SDL_GAMEPAD_TYPE_COUNT
 end type
 
@@ -79,6 +80,15 @@ public enum type SDL_GamepadAxis
     SDL_GAMEPAD_AXIS_LEFT_TRIGGER,
     SDL_GAMEPAD_AXIS_RIGHT_TRIGGER,
     SDL_GAMEPAD_AXIS_COUNT
+end type
+
+public enum type SDL_GamepadCapSenseType
+	SDL_GAMEPAD_CAPSENSE_INVALID = -1,
+	SDL_GAMEPAD_CAPSENSE_LEFT_STICK = 0,
+	SDL_GAMEPAD_CAPSENSE_RIGHT_STICK,
+	SDL_GAMEPAD_CAPSENSE_LEFT_GRIP,
+	SDL_GAMEPAD_CAPSENSE_RIGHT_GRIP,
+	SDL_GAMEPAD_CAPSENSE_COUNT
 end type
 
 public enum type SDL_GamepadBindingType
@@ -550,4 +560,4 @@ public constant xSDL_GetGamepadAppleSFSymbolsNameForAxis = define_c_func(sdl,"+S
 public function SDL_GetGamepadAppleSFSymbolsNameForAxis(atom gamepad,SDL_GamepadAxis axis)
 	return c_func(xSDL_GetGamepadAppleSFSymbolsNameForAxis,{gamepad,axis})
 end function
-­26.30
+­91.27

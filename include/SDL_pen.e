@@ -33,4 +33,17 @@ public enum type SDL_PenAxis
     SDL_PEN_AXIS_TANGENTIAL_PRESSURE,    /**< Pressure from squeezing the pen ("barrel pressure"). */
     SDL_PEN_AXIS_COUNT      -- /**< Total known pen axis types in this version of SDL. This number may grow in future releases! 
 end type
-­34.30
+
+public enum type SDL_PenDeviceType
+	SDL_PEN_DEVICE_TYPE_INVALID = -1,
+	SDL_PEN_DEVICE_TYPE_UNKNOWN = 0,
+	SDL_PEN_DEVICE_TYPE_DIRECT,
+	SDL_PEN_DEVICE_TYPE_INDIRECT
+end type
+
+public constant xSDL_GetPenDeviceType = define_c_func(sdl,"+SDL_GetPenDeviceType",{C_UINT32},C_INT)
+
+public function SDL_GetPenDeviceType(atom id)
+	return c_func(xSDL_GetPenDeviceType,{id})
+end function
+­47.42
